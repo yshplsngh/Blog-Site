@@ -9,7 +9,22 @@ async function run() {
     // For text-only input, use the gemini-pro model
     const model = genAI.getGenerativeModel({ model: "gemini-pro"});
 
-    const prompt = "tell me my history"
+    const prompt = `convert this given code into TypeScript and also tell me the error and fix those code` +
+    `import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query";
+
+const baseQuery = fetchBaseQuery({
+    baseUrl: 'https://technotes-api.onrender.com',
+    credentials: 'include',
+    prepareHeaders: (headers, { getState }) => {
+        const token = getState().auth.token;
+
+        if (token) {
+            headers.set("authorization", \`Bearer \${token}\`);
+        }
+        return headers;
+    }
+});`+"fix this code and convert this code to typescript"
+
 
     const result = await model.generateContent(prompt);
     const response = await result.response;
