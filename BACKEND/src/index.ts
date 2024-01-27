@@ -15,16 +15,21 @@ import {validateEnv} from "./config/config";
 import {msg} from "./types/enumMsg";
 import cookieParser from "cookie-parser";
 
+
 const app:Application = express();
 app.disable("x-powered-by");
 validateEnv();
 dbConnect();
+
+
+
 app.use(requestLogger);
 app.use(credentials);
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser())
+
 
 app.use('/api/v1/auth/',authRouter);
 app.use('/api/v1/note/',noteRouter);

@@ -5,7 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="08bf377d-2469-4061-944e-aea5ea94c733" name="Changes" comment="check rate-limiter">
+      <change afterPath="$PROJECT_DIR$/src/wtf/gemini.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/config/config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/logs/serverInfo.log" beforeDir="false" afterPath="$PROJECT_DIR$/src/logs/serverInfo.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/wtf/geminiAI.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/wtf/geminiAI.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,8 +22,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="JavaScript File" />
         <option value="TypeScript File" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
@@ -42,10 +49,11 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Node.js.gemini.js.executor": "Run",
     "Node.js.rateLimiter.js.executor": "Run",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "master",
     "ignore.virus.scanning.warn.message": "true",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -57,12 +65,16 @@
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Node.js.gemini.js">
+    <configuration name="gemini.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/src/wtf/gemini.js" working-dir="$PROJECT_DIR$/src/wtf">
+      <method v="2" />
+    </configuration>
     <configuration name="rateLimiter.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/src/wtf/rateLimiter.js" working-dir="$PROJECT_DIR$/src/wtf">
       <method v="2" />
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Node.js.gemini.js" />
         <item itemvalue="Node.js.rateLimiter.js" />
       </list>
     </recent_temporary>
@@ -93,7 +105,7 @@
       <workItem from="1706292093621" duration="677000" />
       <workItem from="1706294199236" duration="67000" />
       <workItem from="1706362410132" duration="561000" />
-      <workItem from="1706363182939" duration="838000" />
+      <workItem from="1706363182939" duration="3387000" />
     </task>
     <task id="LOCAL-00001" summary="check rate-limiter">
       <option name="closed" value="true" />
