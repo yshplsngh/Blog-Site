@@ -1,0 +1,14 @@
+22:50:37 01/21/2024	SyntaxError: Unexpected token '}', ..."assword"}" is not valid JSON	GET	url:/api/v1/auth/login	origin:undefined
+13:34:06 01/22/2024	SyntaxError: Unexpected token '}', ..."assword"}" is not valid JSON	GET	url:/api/v1/auth/login	origin:undefined
+18:17:07 01/22/2024	SyntaxError: Expected double-quoted property name in JSON at position 69 (line 4 column 1)	POST	url:/api/v1/auth/register	origin:undefined
+18:17:22 01/22/2024	SyntaxError: Expected double-quoted property name in JSON at position 69 (line 4 column 1)	POST	url:/api/v1/auth/register	origin:undefined
+18:19:17 01/22/2024	SyntaxError: Expected double-quoted property name in JSON at position 69 (line 4 column 1)	POST	url:/api/v1/auth/register	origin:undefined
+18:19:18 01/22/2024	SyntaxError: Expected double-quoted property name in JSON at position 69 (line 4 column 1)	POST	url:/api/v1/auth/register	origin:undefined
+18:20:07 01/22/2024	SyntaxError: Expected double-quoted property name in JSON at position 69 (line 4 column 1)	POST	url:/api/v1/auth/register	origin:undefined
+18:23:02 01/22/2024	SyntaxError: Expected double-quoted property name in JSON at position 69 (line 4 column 1)	POST	url:/api/v1/auth/register	origin:undefined
+18:23:24 01/22/2024	SyntaxError: Expected ',' or '}' after property value in JSON at position 58 (line 3 column 18)	POST	url:/api/v1/auth/register	origin:undefined
+18:24:00 01/22/2024	SyntaxError: Unexpected token ']', ..."12345678",],    "n"... is not valid JSON	POST	url:/api/v1/auth/register	origin:undefined
+18:24:09 01/22/2024	SyntaxError: Expected ',' or ']' after array element in JSON at position 80 (line 4 column 11)	POST	url:/api/v1/auth/register	origin:undefined
+00:47:08 01/23/2024		SyntaxError: Expected double-quoted property name in JSON at position 40 (line 4 column 1)	GET	url:/api/v1/auth/login	origin:undefined
+00:42:25 01/24/2024		SyntaxError: Expected property name or '}' in JSON at position 3 (line 2 column 1)	POST	url:/api/v1/note/createNote	origin:undefined
+13:15:35 01/24/2024		SyntaxError: Bad control character in string literal in JSON at position 16 (line 2 column 14)	POST	url:/api/v1/note/createNote	origin:undefined
