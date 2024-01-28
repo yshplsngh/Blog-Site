@@ -88,12 +88,12 @@ const refresh = async (req:Request,res:Response)=>{
     const cookie = req.cookies;
     if(!cookie?.jwt){
         msgLogger("jwt not found in cookies|refresh")
-        return res.status(403).send({success:false,message:"UnAuthorised"})
+        return res.status(401).send({success:false,message:"UnAuthorised"})
     }
     jwt.verify(cookie.jwt,config.REFRESH_TOKEN_SECRET,async (err:any,decoded:any)=>{
         if(err){
             msgLogger("invalid jwt in cookies|refresh");
-            return res.status(403).send({success:false,message:"UnAuthorized"});
+            return res.status(401).send({success:false,message:"UnAuthorized"});
         }
 
         const found = await UserSchema
@@ -102,7 +102,7 @@ const refresh = async (req:Request,res:Response)=>{
 
         if(!found){
             msgLogger("user found in jwt is not found|refresh");
-            return res.status(403).send({success:false,message:"UnAuthorized"})
+            return res.status(401).send({success:false,message:"UnAuthorized"})
         }
 
         const  userInfo:payloadIn  = {

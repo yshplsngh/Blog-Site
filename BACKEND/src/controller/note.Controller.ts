@@ -2,6 +2,9 @@ import {z} from 'zod'
 import {Response,Request} from "express";
 import {dataToInsert} from "../types/noteTypes";
 import UserSchema from "../model/user.schema";
+
+
+
 // @desc create new note
 // @route POST api/v1/note/createNote
 // @access private
@@ -22,17 +25,17 @@ const createNoteForm = z.object({
         .min(1,noteMsg.minLength)
         .max(1000,noteMsg.maxDLength)
 })
-const createNote = async (req:Request & dataToInsert,res:Response)=>{
+const createNote = async (req:Request&dataToInsert,res:Response)=>{
     const isValid = createNoteForm.safeParse(req.body);
     if(!isValid.success){
         const msg:string = isValid.error.issues[0].message;
         return res.status(422).send({success:false,message:msg})
     }
     const found = await UserSchema.findOne({email:req.email});
-    if(!found){
-
-    }
-    res.status(201).send(isValid)
+    // if(!found){
+    //
+    // }
+    res.status(201).send({isValid,found})
 }
 
 export {createNote}

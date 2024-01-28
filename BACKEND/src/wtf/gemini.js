@@ -10,20 +10,10 @@ async function run() {
     const model = genAI.getGenerativeModel({ model: "gemini-pro"});
 
     const prompt = `convert this given code into TypeScript and also tell me the error and fix those code` +
-    `import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query";
-
-const baseQuery = fetchBaseQuery({
-    baseUrl: 'https://technotes-api.onrender.com',
-    credentials: 'include',
-    prepareHeaders: (headers, { getState }) => {
-        const token = getState().auth.token;
-
-        if (token) {
-            headers.set("authorization", \`Bearer \${token}\`);
-        }
-        return headers;
-    }
-});`+"fix this code and convert this code to typescript"
+    `const baseQueryWithReAuth = async (args,api,extraOptions)=>{
+        const result = await baseQuery(args,api,extraOptions);
+        return result;
+    }`+"fix this code and convert this code to typescript"
 
 
     const result = await model.generateContent(prompt);

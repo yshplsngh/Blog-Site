@@ -18,11 +18,11 @@ const mainLogger = async (message:string,filename:string):Promise<void> =>{
 }
 const requestLogger = (req:Request,res:Response,next:NextFunction):void=>{
     const message:string = `method:${req.method}\turl:${req.url}\torigin:${req.headers.origin}`
-    mainLogger(message,"request.log");
+    mainLogger(message,"requestLog.log");
     next();
 }
 const infoLogger = (data:string):void=>{
-    mainLogger(data,"serverInfo.log")
+    mainLogger(data,"serverLog.log")
 }
 const errorLogger = (err:any,req:Request,res:Response,next:NextFunction):void=>{
     if (err instanceof SyntaxError && 'body' in err) {
@@ -37,6 +37,11 @@ const authLogger = (name:string,email:string,msg:string):void=>{
     mainLogger(message,"authLog.log")
 }
 const msgLogger = (data:string):void=>{
-    mainLogger(data,"msgLogger.log");
+    mainLogger(data,"jwtLog.log");
 }
-export {mainLogger,requestLogger,infoLogger,errorLogger,authLogger,msgLogger}
+
+const adminLogger = (email:string|undefined,msg:string):void=>{
+    const message:string = `email:${email}\t msg:${msg}`;
+    mainLogger(message,"adminLog.log");
+}
+export {mainLogger,requestLogger,infoLogger,errorLogger,authLogger,msgLogger,adminLogger}

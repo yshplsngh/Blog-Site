@@ -14,7 +14,7 @@ const JWTverify = (req:Request & dataToInsert,res:Response,next:NextFunction)=>{
     const data:string = headerData.toString()
     if(!data.startsWith('Bearer')){
         msgLogger("access token did not start with Bearer|jwtVerify");
-        return res.status(403).send({success:false,message:"Unauthorized"})
+        return res.status(401).send({success:false,message:"Unauthorized"})
     }
     const orgToken:string = data.split(' ')[1]
     jwt.verify(orgToken,config.ACCESS_TOKEN_SECRET,async (err:any,decoded:any)=>{
