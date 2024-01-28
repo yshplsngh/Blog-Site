@@ -27,7 +27,9 @@ const register = async (req:Request,res:Response)=>{
         name:isValid.data.name,
         email:isValid.data.email,
         password:hashedPass,
-        roles:['people']
+        roles:['people'],
+        isActive:true,
+        notes:[]
     }
 
     const user = await UserSchema.create(userData);

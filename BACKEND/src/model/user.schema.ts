@@ -5,7 +5,8 @@ export interface userModel{
     email:string
     password:string
     roles:string[]
-    isActive?:boolean
+    isActive:boolean
+    notes:mongoose.Types.ObjectId[]
 }
 
 const userScheme:Schema = new Schema<userModel>({
@@ -27,8 +28,12 @@ const userScheme:Schema = new Schema<userModel>({
     },
     isActive:{
         type:Boolean,
-        default:true
-    }
+        required:true,
+    },
+    notes:[{
+        type:mongoose.Schema.Types.ObjectId,
+        required:true
+    }]
 },
     {
         timestamps:true

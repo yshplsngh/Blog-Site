@@ -1,4 +1,4 @@
-import jwt, {VerifyErrors, JwtPayload, VerifyOptions} from 'jsonwebtoken'
+import jwt from 'jsonwebtoken'
 import {NextFunction,Request,Response} from "express";
 import {msgLogger} from "./logger";
 import {config} from "../config/config";
