@@ -1,5 +1,4 @@
-18:58:18 01/28/2024		invalid jwt in header|jwtVerify
-19:19:55 01/28/2024		invalid jwt in header|jwtVerify
-19:45:26 01/28/2024		invalid jwt in header|jwtVerify
-01:33:32 01/29/2024		invalid jwt in header|jwtVerify
-01:39:16 01/29/2024		invalid jwt in header|jwtVerify
+23:48:57 01/30/2024		access token not found in header|jwtVerify
+01:54:37 01/31/2024		expired or modified jwt in header|jwtVerify
+22:39:57 01/31/2024		access token not found in header|jwtVerify
+22:41:01 01/31/2024		access token not found in header|jwtVerify

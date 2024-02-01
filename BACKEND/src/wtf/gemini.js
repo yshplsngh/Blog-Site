@@ -9,12 +9,7 @@ async function run() {
     // For text-only input, use the gemini-pro model
     const model = genAI.getGenerativeModel({ model: "gemini-pro"});
 
-    const prompt = `convert this given code into TypeScript and also tell me the error and fix those code` +
-    `const baseQueryWithReAuth = async (args,api,extraOptions)=>{
-        const result = await baseQuery(args,api,extraOptions);
-        return result;
-    }`+"fix this code and convert this code to typescript"
-
+    const prompt = "explain deep start-ups or provide some fact and number"+"for group discussion"
 
     const result = await model.generateContent(prompt);
     const response = await result.response;

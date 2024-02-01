@@ -10,11 +10,12 @@ enum errMsg{
 
 
 /* for login */
-interface loginType{
+export interface loginType{
     email:string,
     password:string
 }
-const loginFormData:ZodType<loginType> = z.object({
+
+const loginFormData:ZodType<loginType> = z.strictObject({
     email:z.string()
         .min(3,errMsg.minLength)
         .max(30,errMsg.maxLength)
@@ -34,7 +35,7 @@ interface registerType{
     email:string
     password:string
 }
-const registerFormData:ZodType<registerType> = z.object({
+const registerFormData:ZodType<registerType> = z.strictObject({
     name:z.string()
         .min(3,errMsg.minLength)
         .max(30,errMsg.maxLength)

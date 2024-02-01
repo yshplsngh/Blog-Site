@@ -1,10 +1,12 @@
 import {Request, Response} from "express";
 import  {config} from '../config/config'
-import {loginFormData,registerFormData,payloadIn} from "../types/authTypes";
+import {loginFormData, registerFormData, payloadIn} from "../types/authTypes";
 import UserSchema,{userModel} from "../model/user.schema";
 import bcrypt from 'bcrypt'
-import {authLogger, mainLogger, msgLogger} from "../middleware/logger";
+import {authLogger, msgLogger} from "../middleware/logger";
 import jwt from 'jsonwebtoken'
+import {returnMsg} from "../utils/ResponseHandler";
+
 
 
 // @desc register
@@ -13,7 +15,7 @@ import jwt from 'jsonwebtoken'
 const register = async (req:Request,res:Response)=>{
     const isValid = registerFormData.safeParse(req.body)
     if(!isValid.success){
-        const msg:string = isValid.error.issues[0].path[0]+" "+isValid.error.issues[0].message;
+        const msg:string = returnMsg(isValid);
         return res.status(422).send({success:false,message:msg});
     }
 
@@ -49,7 +51,7 @@ const register = async (req:Request,res:Response)=>{
 const login = async (req:Request,res:Response)=>{
     const isValid = loginFormData.safeParse(req.body);
     if(!isValid.success){
-        const mess:string = isValid.error.issues[0].path[0]+" "+isValid.error.issues[0].message;
+        const mess:string = returnMsg(isValid);
         return res.status(422).json({message:mess})
     }
 

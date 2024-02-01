@@ -19,6 +19,13 @@ const getUsers = async (req:Request&dataToInsert,res:Response)=>{
     res.status(200).send({success:true,users});
 }
 
+
+// @desc update user info
+// @route PATCH api/v1/admin/users
+//
+
+
+
 // @desc delete a user
 // @route DELETE api/v1/admin
 // @access Private
