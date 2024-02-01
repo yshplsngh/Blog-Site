@@ -3,6 +3,7 @@ import * as path from "path";
 import * as fsPromises from "fs/promises"
 import {NextFunction, Request, Response} from "express";
 import {format} from 'date-fns'
+import {UserResponse} from "../types/globalTypes";
 
 const mainLogger = async (message:string,filename:string):Promise<void> =>{
     const date:string = format(new Date(),"HH:mm:ss MM/dd/yyyy")
@@ -16,32 +17,35 @@ const mainLogger = async (message:string,filename:string):Promise<void> =>{
         console.log(err);
     }
 }
-const requestLogger = (req:Request,res:Response,next:NextFunction):void=>{
+export const requestLogger = (req:Request,res:Response,next:NextFunction):void=>{
     const message:string = `method:${req.method}\turl:${req.url}\torigin:${req.headers.origin}`
     mainLogger(message,"requestLog.log");
     next();
 }
-const infoLogger = (data:string):void=>{
+export const infoLogger = (data:string):void=>{
     mainLogger(data,"serverLog.log")
 }
-const errorLogger = (err:any,req:Request,res:Response,next:NextFunction):void=>{
+export const errorLogger = (err:any,req:Request,res:Response<UserResponse>,next:NextFunction):void=>{
     if (err instanceof SyntaxError && 'body' in err) {
         const msg:string = err.message.replace(/\r?\n|\r/g,"");
         mainLogger(`${err.name}: ${msg}\t${req.method}\t${"url"}:${req.url}\t${"origin"}:${req.headers.origin}`,'errLog.log');
-        res.status(400).json({message:"Invalid JSON format. Please ensure your input is a valid JSON object.",errMsg:msg});
+        res.status(400).json({success:true,message:"Invalid JSON format. Please ensure your input is a valid JSON object."});
     }
     next();
 }
-const authLogger = (name:string,email:string,msg:string):void=>{
+export const authLogger = (name:string,email:string,msg:string):void=>{
     const message:string = `name:${name}\temail:${email}\t msg:${msg}`;
     mainLogger(message,"authLog.log")
 }
-const msgLogger = (data:string):void=>{
+export const msgLogger = (data:string):void=>{
     mainLogger(data,"jwtLog.log");
 }
 
-const adminLogger = (email:string|undefined,msg:string):void=>{
+export const adminLogger = (email:string|undefined,msg:string):void=>{
     const message:string = `email:${email}\t msg:${msg}`;
     mainLogger(message,"adminLog.log");
 }
-export {mainLogger,requestLogger,infoLogger,errorLogger,authLogger,msgLogger,adminLogger}
+export const userLogger = (email:string|undefined,msg:string):void=>{
+    const message:string = `email:${email}\t msg:${msg}`;
+    mainLogger(message,"userLog.log");
+}

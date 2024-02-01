@@ -1,53 +1,73 @@
 import UserSchema from "../model/user.schema";
 import {Request, Response} from "express";
-import {dataToInsert} from "../types/noteTypes";
+import {dataToInsert,UserResponse} from "../types/globalTypes";
 import {adminLogger} from "../middleware/logger";
+import {isId} from "../types/noteTypes";
+import {returnMsg} from "../utils/ResponseHandler";
+import {updateInfoType} from "../types/adminTypes";
 
 
 // @desc get all users
-// @route GET api/v1/admin
-// @route private
-const getUsers = async (req:Request&dataToInsert,res:Response)=>{
-    if(!req.roles?.includes('admin')){
-        return res.status(401).send({success:false,message:"Unauthorized|Not a Admin"})
-    }
+// @route GET api/v1/admin/users
+// @access private
+
+const getUsers = async (req:Request&dataToInsert,res:Response<UserResponse>) =>{
     const users = await UserSchema.find().select('-password').lean();
     if(!users?.length){
         return res.status(400).send({success:false,message:"no users found"});
     }
-    adminLogger(req.email,"request all user")
-    res.status(200).send({success:true,users});
+    adminLogger(req.email,"requested all user")
+    return res.status(200).send({success:true,message:users});
 }
 
 
 // @desc update user info
 // @route PATCH api/v1/admin/users
-//
-
-
-
-// @desc delete a user
-// @route DELETE api/v1/admin
 // @access Private
-const deleteUser = async(req:Request&dataToInsert,res:Response)=>{
-    if(!req.roles?.includes('admin')){
-        return res.status(401).send({success:false,message:"Unauthorized|Not a Admin"})
+const updateUserData = async(req:Request&dataToInsert,res:Response<UserResponse>)=>{
+    const isValid = updateInfoType.safeParse(req.body);
+    if(!isValid.success){
+        const msg: string = returnMsg(isValid);
+        return res.status(422).send({success: false, message: msg})
     }
-
-    const {id} = req.body;
-    if(!id){
-        return res.status(400).send({success:false,message:"User ID required"})
-    }
-
-    const user = await UserSchema.findById(id).exec();
+    const user = await UserSchema.findById(isValid.data.id).exec();
     if(!user){
         return res.status(400).send({success:false,message:"User not found"})
     }
+    user.email = isValid.data.email
+    user.name = isValid.data.name
+    user.isActive = isValid.data.isActive
+    user.roles = isValid.data.roles
 
-    const result = await user.deleteOne();
-    const reply = `Username ${user.name} with ID ${user._id} deleted`
+    await user.save();
+    const reply:string = `Username ${user.name} with ID ${user._id} updated successfully`
     adminLogger(req.email,reply);
     res.status(200).send({success:true,message:reply});
 }
 
-export {getUsers,deleteUser}
+
+// @desc delete a user
+// @route DELETE api/v1/admin/users
+// @access Private
+const deleteUser = async(req:Request&dataToInsert,res:Response<UserResponse>)=>{
+    if(!req.roles?.includes('admin')){
+        return res.status(401).send({success:false,message:"Unauthorized|Not a Admin"})
+    }
+    const isValid = isId.safeParse(req.body);
+    if (!isValid.success) {
+        const msg: string = returnMsg(isValid);
+        return res.status(422).send({success: false, message: msg})
+    }
+
+    const user = await UserSchema.findById(isValid.data.id).exec();
+    if(!user){
+        return res.status(400).send({success:false,message:"User not found"})
+    }
+
+    await user.deleteOne();
+    const reply:string = `Username ${user.name} with ID ${user._id} deleted`
+    adminLogger(req.email,reply);
+    res.status(200).send({success:true,message:reply});
+}
+
+export {getUsers,deleteUser,updateUserData}

@@ -12,8 +12,9 @@ import {adminRouter} from "./routes/admin.routes";
 import {corsOptions} from "./config/corsOptions";
 import {credentials} from './config/credentials';
 import {validateEnv} from "./config/config";
-import {msg} from "./types/enumMsg";
+import {msg} from "./types/globalTypes";
 import cookieParser from "cookie-parser";
+import {userRouter} from "./routes/user.routes";
 
 
 const app:Application = express();
@@ -27,16 +28,19 @@ app.use(requestLogger);
 app.use(credentials);
 app.use(cors(corsOptions));
 app.use(express.json());
+/*for rich html form data*/
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser())
 
 
-app.use('/api/v1/auth/',authRouter);
-app.use('/api/v1/note/',noteRouter);
+app.use('/api/v1/auth',authRouter);
+app.use('/api/v1/note',noteRouter);
 app.use('/api/v1/admin',adminRouter);
+app.use('/api/v1/user',userRouter);
+
+
 
 app.use(errorLogger);
-
 
 mongoose.connection.on('open', ():void => {
     infoLogger(msg.MCO);

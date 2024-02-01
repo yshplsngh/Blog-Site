@@ -6,13 +6,14 @@ import bcrypt from 'bcrypt'
 import {authLogger, msgLogger} from "../middleware/logger";
 import jwt from 'jsonwebtoken'
 import {returnMsg} from "../utils/ResponseHandler";
+import {UserResponse} from "../types/globalTypes";
 
 
 
 // @desc register
 // @route POST /api/v1/auth/register
 // @access public
-const register = async (req:Request,res:Response)=>{
+const register = async (req:Request,res:Response<UserResponse>)=>{
     const isValid = registerFormData.safeParse(req.body)
     if(!isValid.success){
         const msg:string = returnMsg(isValid);
@@ -46,18 +47,21 @@ const register = async (req:Request,res:Response)=>{
 
 
 // @desc login
-// @route GET /api/v1/auth/login
+// @route POST /api/v1/auth/login
 // @access Public
-const login = async (req:Request,res:Response)=>{
+const login = async (req:Request,res:Response<UserResponse>)=>{
     const isValid = loginFormData.safeParse(req.body);
     if(!isValid.success){
         const mess:string = returnMsg(isValid);
-        return res.status(422).json({message:mess})
+        return res.status(422).json({success:false,message:mess})
     }
 
     const found = await UserSchema.findOne({email:isValid.data.email}).lean().exec();
     if(!found){
         return res.status(401).send({success:false,message:"invalid credential"})
+    }
+    if(!found.isActive){
+        return res.status(403).send({success:false,message:"you are blocked motherfucker"})
     }
 
     const match:boolean = await bcrypt.compare(isValid.data.password,found.password);
@@ -81,14 +85,14 @@ const login = async (req:Request,res:Response)=>{
         sameSite:"none",secure:true
     });
     authLogger(found.name,found.email,"login");
-    res.status(200).send({success:true,accessToken});
+    res.status(200).send({success:true,message:accessToken});
 }
 
 
 // @desc refresh token,coz token is expired
-// @route Get /api/v1/auth/refresh
+// @route GET /api/v1/auth/refresh
 // @access public
-const refresh = async (req:Request,res:Response)=>{
+const refresh = async (req:Request,res:Response<UserResponse>)=>{
     const cookie = req.cookies;
     if(!cookie?.jwt){
         msgLogger("jwt not found in cookies|refresh")
@@ -116,7 +120,7 @@ const refresh = async (req:Request,res:Response)=>{
         }
 
         const accessToken:string = jwt.sign({userInfo},config.ACCESS_TOKEN_SECRET,{expiresIn:'15m'})
-        res.status(200).send({success:true,accessToken});
+        res.status(200).send({success:true,message:accessToken});
     });
 }
 

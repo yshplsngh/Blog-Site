@@ -2,10 +2,10 @@ import jwt from 'jsonwebtoken'
 import {NextFunction,Request,Response} from "express";
 import {msgLogger} from "./logger";
 import {config} from "../config/config";
-import {dataToInsert} from "../types/noteTypes";
+import {dataToInsert, UserResponse} from "../types/globalTypes";
 
 
-const JWTverify = (req:Request & dataToInsert,res:Response,next:NextFunction)=>{
+const JWTverify = (req:Request & dataToInsert,res:Response<UserResponse>,next:NextFunction)=>{
     const headerData:string|undefined|string[] = req.headers.authorization || req.headers.Authorization;
     if(!headerData){
         msgLogger("access token not found in header|jwtVerify");
@@ -20,7 +20,7 @@ const JWTverify = (req:Request & dataToInsert,res:Response,next:NextFunction)=>{
     jwt.verify(orgToken,config.ACCESS_TOKEN_SECRET,async (err:any,decoded:any)=>{
         if(err){
             msgLogger("expired or modified jwt in header|jwtVerify");
-            return res.status(403).send({success:false,message:"UnAuthorizedexpired or modified jwt in header|jwtVerify"});
+            return res.status(403).send({success:false,message:"UnAuthorized/ expired or modified jwt in header|jwtVerify"});
         }
 
         req.email = decoded.userInfo.email;

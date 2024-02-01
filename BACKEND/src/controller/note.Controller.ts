@@ -1,37 +1,15 @@
-import {z} from 'zod'
 import {Response, Request} from "express";
-import {dataToInsert, noteInputType, noteInputTypeWithId} from "../types/noteTypes";
+import {createNoteForm, createNoteFormWithId, isId} from "../types/noteTypes";
 import UserSchema from "../model/user.schema";
 import NoteSchema, {noteModel} from "../model/note.schema";
 import {returnMsg} from "../utils/ResponseHandler";
-import mongoose from "mongoose";
+import {dataToInsert, UserResponse} from "../types/globalTypes";
 
 
 // @desc create new note
 // @route POST api/v1/note/createNote
 // @access private
-enum noteMsg {
-    minLength = " can't be empty",
-    maxTLength = "title can't be more than 100 character, pay 2000 for 1 million character upi id: 8439345464@ybl",
-    maxDLength = "description can't be more than 1000 character, pay 2000 for 1 million character upi id: 8439345464@ybl"
-}
-
-const createNoteForm = z.strictObject({
-    title: z.string()
-        .trim()
-        .min(1, noteMsg.minLength)
-        .max(100, noteMsg.maxTLength),
-    desc: z.string()
-        .trim()
-        .min(1, noteMsg.minLength)
-        .max(1000, noteMsg.maxDLength),
-})
-
-
-// @desc create new note
-// @route POST api/v1/note/createNote
-// @access private
-const createNote = async (req: Request & dataToInsert, res: Response) => {
+const createNote = async (req: Request & dataToInsert, res:Response<UserResponse>) => {
     const isValid = createNoteForm.safeParse(req.body);
     if (!isValid.success) {
         const msg: string = returnMsg(isValid);
@@ -59,7 +37,8 @@ const createNote = async (req: Request & dataToInsert, res: Response) => {
 // @desc get all notes
 // @route GET api/v1/note/getAllNotes
 // @access private
-const getAllNotes = async (req: Request & dataToInsert, res: Response) => {
+const getAllNotes = async (req: Request & dataToInsert,res:Response<UserResponse>) => {
+    /*here we need _id to get all notes of that user*/
     const found = await UserSchema.findOne({email: req.email}).select('_id').lean().exec();
     if (!found) {
         return res.status(401).send({success: false, message: "user not found"})
@@ -71,57 +50,49 @@ const getAllNotes = async (req: Request & dataToInsert, res: Response) => {
         const userData = await UserSchema.findById(note.user).select('email').lean().exec();
         return {...note, email: userData?.email}
     }))
-    res.status(201).send({notesWithUser})
+    res.status(201).send({success:true,message:notesWithUser})
 }
 
 
 // @desc update title,desc
 // @route PATCH api/v1/note/updateNote
 // @access private
-const isId = z.strictObject({
-    id:z.string()
-        .trim()
-        .refine((data:string):boolean=>{
-            return mongoose.Types.ObjectId.isValid(data)
-        })
-})
-const createNoteFormWithId = createNoteForm.merge(isId);
-const updateNote = async (req: Request&dataToInsert, res: Response) => {
+const updateNote = async (req: Request & dataToInsert, res:Response<UserResponse>) => {
     const isValid = createNoteFormWithId.safeParse(req.body);
-    if (!isValid.success){
+    if (!isValid.success) {
         const msg: string = returnMsg(isValid);
         return res.status(422).send({success: false, message: msg})
     }
     const note = await NoteSchema.findById(isValid.data.id).exec();
-    if(!note){
+    if (!note) {
         return res.status(404).send({success: false, message: "note not found"})
     }
 
-    note.title=isValid.data.title;
-    note.desc=isValid.data.desc;
+    note.title = isValid.data.title;
+    note.desc = isValid.data.desc;
     await note.save();
-    const reply:string = `${req.email}, note updated with id ${isValid.data.id}`
-    res.status(201).send({success:true,message:reply});
+    const reply: string = `${req.email}, note updated with id ${isValid.data.id}`
+    res.status(201).send({success: true, message: reply});
 }
 
 
 // @desc delete note
 // @route DELETE api/v1/note/deleteNote
 // @access private
-const deleteNote = async (req:Request&dataToInsert,res:Response)=>{
+const deleteNote = async (req: Request & dataToInsert, res:Response<UserResponse>) => {
     const isValid = isId.safeParse(req.body);
-    if (!isValid.success){
+    if (!isValid.success) {
         const msg: string = returnMsg(isValid);
         return res.status(422).send({success: false, message: msg})
     }
     const note = await NoteSchema.findById(isValid.data.id).exec();
-    if(!note){
+    if (!note) {
         return res.status(404).send({success: false, message: "note not found"})
     }
 
     await note.deleteOne();
-    const reply:string = `${req.email}, note deleted with id ${isValid.data.id}`
-    res.status(201).send({success:true,message:reply});
+    const reply: string = `${req.email}, note deleted with id ${isValid.data.id}`
+    res.status(201).send({success: true, message: reply});
 }
 
-export {createNote, getAllNotes, updateNote,deleteNote};
+export {createNote, getAllNotes, updateNote, deleteNote};

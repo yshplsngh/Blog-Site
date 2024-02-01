@@ -15,47 +15,40 @@ export interface loginType{
     password:string
 }
 
-const loginFormData:ZodType<loginType> = z.strictObject({
+export const isEmail = z.strictObject({
     email:z.string()
         .min(3,errMsg.minLength)
         .max(30,errMsg.maxLength)
         .trim()
         .toLowerCase()
-        .email(errMsg.isEmail),
-    password:z.string()
-        .trim()
-        .min(5,errMsg.minPass)
-        .max(100,errMsg.maxPass),
+        .email(errMsg.isEmail)
 })
-
-
-/* for register */
-interface registerType{
-    name:string
-    email:string
-    password:string
-}
-const registerFormData:ZodType<registerType> = z.strictObject({
-    name:z.string()
-        .min(3,errMsg.minLength)
-        .max(30,errMsg.maxLength)
-        .trim(),
-    email:z.string()
-        .min(3,errMsg.minLength)
-        .max(30,errMsg.maxLength)
-        .trim()
-        .toLowerCase()
-        .email(errMsg.isEmail),
+export const isPassword = z.strictObject({
     password:z.string()
         .trim()
         .min(5,errMsg.minPass)
         .max(100,errMsg.maxPass)
 })
+const loginFormData = isEmail.merge(isPassword)
 
-interface payloadIn{
+
+/* for register */
+// interface registerType extends loginType{
+//     name:string
+// }
+
+export const isName = z.strictObject({
+    name:z.string()
+        .min(3,errMsg.minLength)
+        .max(30,errMsg.maxLength)
+        .trim(),
+})
+const registerFormData = loginFormData.merge(isName)
+
+export interface payloadIn{
     name:string,
     email:string,
     roles:string[]
 }
 
-export {loginFormData,registerFormData,payloadIn};
+export {loginFormData,registerFormData};

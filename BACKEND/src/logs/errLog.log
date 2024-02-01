@@ -20,3 +20,8 @@
 22:25:07 01/31/2024		SyntaxError: Expected double-quoted property name in JSON at position 64 (line 4 column 1)	GET	url:/api/v1/auth/login	origin:undefined
 22:54:43 01/31/2024		SyntaxError: Expected double-quoted property name in JSON at position 31 (line 3 column 1)	POST	url:/api/v1/note/createNote	origin:undefined
 12:49:46 02/01/2024		SyntaxError: Bad control character in string literal in JSON at position 37 (line 2 column 35)	DELETE	url:/api/v1/note/deleteNote	origin:undefined
+21:51:33 02/01/2024		SyntaxError: Expected ',' or '}' after property value in JSON at position 42 (line 4 column 1)	DELETE	url:/api/v1/note/deleteNote	origin:undefined
+21:51:45 02/01/2024		SyntaxError: Bad control character in string literal in JSON at position 37 (line 2 column 35)	DELETE	url:/api/v1/note/deleteNote	origin:undefined
+23:51:40 02/01/2024		SyntaxError: Expected double-quoted property name in JSON at position 67 (line 5 column 1)	PATCH	url:/api/v1/admin/users	origin:undefined
+00:03:05 02/02/2024		SyntaxError: Expected ':' after property name in JSON at position 119 (line 5 column 23)	PATCH	url:/api/v1/admin/users	origin:undefined
+00:08:57 02/02/2024		SyntaxError: Expected ',' or ']' after array element in JSON at position 136 (line 6 column 15)	PATCH	url:/api/v1/admin/users	origin:undefined
