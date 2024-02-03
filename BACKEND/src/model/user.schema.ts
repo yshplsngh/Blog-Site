@@ -7,6 +7,7 @@ export interface userModel{
     roles:string[]
     isActive:boolean
     notes:mongoose.Types.ObjectId[]
+    refreshToken:String[]
 }
 
 const userScheme:Schema = new Schema<userModel>({
@@ -33,7 +34,8 @@ const userScheme:Schema = new Schema<userModel>({
     notes:[{
         type:mongoose.Schema.Types.ObjectId,
         required:true
-    }]
+    }],
+    refreshToken:[String]
 },
     {
         timestamps:true

@@ -32,7 +32,8 @@ const register = async (req:Request,res:Response<UserResponse>)=>{
         password:hashedPass,
         roles:['people'],
         isActive:true,
-        notes:[]
+        notes:[],
+        refreshToken:[]
     }
 
     const user = await UserSchema.create(userData);
@@ -50,13 +51,16 @@ const register = async (req:Request,res:Response<UserResponse>)=>{
 // @route POST /api/v1/auth/login
 // @access Public
 const login = async (req:Request,res:Response<UserResponse>)=>{
+    const cookies = req.cookies;
+    console.log(`cookie available at login:`,cookies);
+
     const isValid = loginFormData.safeParse(req.body);
     if(!isValid.success){
         const mess:string = returnMsg(isValid);
         return res.status(422).json({success:false,message:mess})
     }
 
-    const found = await UserSchema.findOne({email:isValid.data.email}).lean().exec();
+    const found = await UserSchema.findOne({email:isValid.data.email}).exec();
     if(!found){
         return res.status(401).send({success:false,message:"invalid credential"})
     }
@@ -73,17 +77,38 @@ const login = async (req:Request,res:Response<UserResponse>)=>{
 
     const accessToken:string = jwt.sign(
         {userInfo}, config.ACCESS_TOKEN_SECRET,
-        {expiresIn: '2d'});
+        {expiresIn: '15m'});
 
-    const refreshToken:string = jwt.sign(
+    const newRefreshToken:string = jwt.sign(
         {"email":found.email},config.REFRESH_TOKEN_SECRET,
-        {expiresIn:'7d'}
+        {expiresIn:'1d'}
     )
+    /*store all refresh token except current user one*/
+    let newRefreshTokenArray:String[] = !cookies?.jwt ?
+        found.refreshToken : found.refreshToken.filter(rt=>rt!==cookies.jwt)
 
-    res.cookie('jwt',refreshToken, {
+    if(cookies?.jwt){
+        /*here I don't understand why we are doing this*/
+        const refreshToken = cookies.jwt
+        const foundToken = await UserSchema.findOne({refreshToken}).exec();
+        if(!foundToken){
+            console.log('attempted refresh token reuse at login!')
+            newRefreshTokenArray=[];
+        }
+        /*clear previous token while log in*/
+        res.clearCookie('jwt',{httpOnly:true,sameSite:'none',secure:true})
+    }
+
+
+    found.refreshToken = [...newRefreshTokenArray,newRefreshToken];
+
+    await found.save();
+
+    res.cookie('jwt',newRefreshToken, {
         maxAge: 7*24*60*60*1000, httpOnly: true,
         sameSite:"none",secure:true
     });
+
     authLogger(found.name,found.email,"login");
     res.status(200).send({success:true,message:accessToken});
 }
@@ -98,29 +123,57 @@ const refresh = async (req:Request,res:Response<UserResponse>)=>{
         msgLogger("jwt not found in cookies|refresh")
         return res.status(401).send({success:false,message:"UnAuthorised"})
     }
-    jwt.verify(cookie.jwt,config.REFRESH_TOKEN_SECRET,async (err:any,decoded:any)=>{
+    /* while refreshing clear this RT so after we can store new one */
+    const refreshToken = cookie.jwt;
+    res.clearCookie('jwt',{httpOnly:true,sameSite:'none',secure:true})
+
+    const foundUser = await UserSchema.findOne({refreshToken}).exec();
+
+    /*if NO RT found mean user is reusing it COZ at every refresh request jwt removed from cookies
+    * and also from database and this token is already removed.
+    * also don't understand this one*/
+    if(!foundUser){
+        jwt.verify(refreshToken,config.REFRESH_TOKEN_SECRET,async (err:any,decoded:any)=>{
+            if(err){
+                msgLogger("RT found in cookies but not found in DB and also invalid|refresh");
+                return res.status(401).send({success:false,message:"UnAuthorized"});
+            }
+            const hackedUser = await UserSchema.findOne({email:decoded.email}).exec();
+            if(hackedUser!==null){
+                hackedUser.refreshToken = [];
+                await hackedUser.save();
+            }
+        })
+        return res.status(403).send({success:false,message:"UnAuthorized/ expired or modified jwt in header|jwtVerify"});
+    }
+
+    const newRefreshTokenArray = foundUser.refreshToken.filter(rt=>rt!=refreshToken);
+
+    jwt.verify(refreshToken,config.REFRESH_TOKEN_SECRET,async (err:any,decoded:any)=>{
         if(err){
+            foundUser.refreshToken = [...newRefreshTokenArray]
+            await foundUser.save();
+        }
+        if(err || foundUser.email!==decoded.email){
             msgLogger("invalid jwt in cookies|refresh");
             return res.status(401).send({success:false,message:"UnAuthorized"});
         }
-
-        const found = await UserSchema
-            .findOne({email:decoded.email})
-            .select(['-_id','-password','-isActive','-createdAt','-updatedAt']).lean().exec();
-
-        if(!found){
-            msgLogger("user found in jwt is not found|refresh");
-            return res.status(401).send({success:false,message:"UnAuthorized"})
-        }
+        /*untill here RT is still valid*/
 
         const  userInfo:payloadIn  = {
-            name:found.name,
-            email:found.email,
-            roles:found.roles
+            name:foundUser.name,
+            email:foundUser.email,
+            roles:foundUser.roles
         }
-
+        const roles:string[] = foundUser.roles;
         const accessToken:string = jwt.sign({userInfo},config.ACCESS_TOKEN_SECRET,{expiresIn:'15m'})
-        res.status(200).send({success:true,message:accessToken});
+
+        const newRefreshToken:string = jwt.sign({"email":foundUser.email},config.REFRESH_TOKEN_SECRET, {expiresIn:'1d'})
+
+        foundUser.refreshToken = [...newRefreshTokenArray,newRefreshToken];
+        res.cookie('jwt',newRefreshToken,{httpOnly:true,secure:true,sameSite:"none"})
+
+        res.status(200).send({success:true,message:{accessToken,roles}});
     });
 }
 

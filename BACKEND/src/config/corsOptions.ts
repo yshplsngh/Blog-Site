@@ -4,6 +4,7 @@ type InCallback = (error: Error | null, origin?: boolean) => void;
 
 interface CorsOptions {
     origin: (origin: string | undefined, callback: InCallback) => void;
+    optionsSuccessStatus:number
 }
 
 const corsOptions: CorsOptions = {
@@ -14,7 +15,8 @@ const corsOptions: CorsOptions = {
          else {
             callback(new Error('Not allowed by CORS'));
         }
-    }
+    },
+    optionsSuccessStatus: 200
 };
 
 export { corsOptions };

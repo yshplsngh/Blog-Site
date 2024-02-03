@@ -1072,3 +1072,8 @@
 01:19:21 02/02/2024		method:PATCH	url:/api/v1/user/changePassword	origin:undefined
 01:20:13 02/02/2024		method:PATCH	url:/api/v1/user/changePassword	origin:undefined
 01:20:17 02/02/2024		method:PATCH	url:/api/v1/user/changePassword	origin:undefined
+23:07:37 02/03/2024		method:GET	url:/api/v1/auth/login	origin:undefined
+23:07:46 02/03/2024		method:POST	url:/api/v1/auth/login	origin:undefined
+23:09:50 02/03/2024		method:GET	url:/api/v1/auth/refresh	origin:undefined
+23:42:49 02/03/2024		method:POST	url:/api/v1/auth/login	origin:undefined
+23:43:40 02/03/2024		method:POST	url:/api/v1/auth/login	origin:undefined
