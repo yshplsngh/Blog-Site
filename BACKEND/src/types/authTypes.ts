@@ -17,8 +17,6 @@ export interface loginType{
 
 export const isEmail = z.strictObject({
     email:z.string()
-        .min(3,errMsg.minLength)
-        .max(30,errMsg.maxLength)
         .trim()
         .toLowerCase()
         .email(errMsg.isEmail)
@@ -32,10 +30,6 @@ export const isPassword = z.strictObject({
 const loginFormData = isEmail.merge(isPassword)
 
 
-/* for register */
-// interface registerType extends loginType{
-//     name:string
-// }
 
 export const isName = z.strictObject({
     name:z.string()
@@ -43,7 +37,7 @@ export const isName = z.strictObject({
         .max(30,errMsg.maxLength)
         .trim(),
 })
-const registerFormData = loginFormData.merge(isName)
+const signupFormData = loginFormData.merge(isName)
 
 export interface payloadIn{
     name:string,
@@ -51,4 +45,4 @@ export interface payloadIn{
     roles:string[]
 }
 
-export {loginFormData,registerFormData};
+export {loginFormData,signupFormData};

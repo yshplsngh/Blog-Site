@@ -1,2 +1,2 @@
-const whitelist: string[] = ['http://localhost:3500'];
+const whitelist: string[] = ['http://localhost:5173'];
 export {whitelist};

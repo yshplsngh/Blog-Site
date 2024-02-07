@@ -1,6 +1,6 @@
 import {Request, Response} from "express";
 import  {config} from '../config/config'
-import {loginFormData, registerFormData, payloadIn} from "../types/authTypes";
+import {loginFormData, signupFormData, payloadIn} from "../types/authTypes";
 import UserSchema,{userModel} from "../model/user.schema";
 import bcrypt from 'bcrypt'
 import {authLogger, msgLogger} from "../middleware/logger";
@@ -10,11 +10,11 @@ import {UserResponse} from "../types/globalTypes";
 
 
 
-// @desc register
-// @route POST /api/v1/auth/register
+// @desc signup
+// @route POST /api/v1/auth/signup
 // @access public
-const register = async (req:Request,res:Response<UserResponse>)=>{
-    const isValid = registerFormData.safeParse(req.body)
+const signup = async (req:Request,res:Response<UserResponse>)=>{
+    const isValid = signupFormData.safeParse(req.body)
     if(!isValid.success){
         const msg:string = returnMsg(isValid);
         return res.status(422).send({success:false,message:msg});
@@ -52,7 +52,7 @@ const register = async (req:Request,res:Response<UserResponse>)=>{
 // @access Public
 const login = async (req:Request,res:Response<UserResponse>)=>{
     const cookies = req.cookies;
-    console.log(`cookie available at login:`,cookies);
+    // console.log(`cookie available at login:`,cookies);
 
     const isValid = loginFormData.safeParse(req.body);
     if(!isValid.success){
@@ -65,7 +65,7 @@ const login = async (req:Request,res:Response<UserResponse>)=>{
         return res.status(401).send({success:false,message:"invalid credential"})
     }
     if(!found.isActive){
-        return res.status(403).send({success:false,message:"you are blocked motherfucker"})
+        return res.status(404).send({success:false,message:"you are blocked motherfucker"})
     }
 
     const match:boolean = await bcrypt.compare(isValid.data.password,found.password);
@@ -77,7 +77,7 @@ const login = async (req:Request,res:Response<UserResponse>)=>{
 
     const accessToken:string = jwt.sign(
         {userInfo}, config.ACCESS_TOKEN_SECRET,
-        {expiresIn: '15m'});
+        {expiresIn: '1s'});
 
     const newRefreshToken:string = jwt.sign(
         {"email":found.email},config.REFRESH_TOKEN_SECRET,
@@ -88,7 +88,6 @@ const login = async (req:Request,res:Response<UserResponse>)=>{
         found.refreshToken : found.refreshToken.filter(rt=>rt!==cookies.jwt)
 
     if(cookies?.jwt){
-        /*here I don't understand why we are doing this*/
         const refreshToken = cookies.jwt
         const foundToken = await UserSchema.findOne({refreshToken}).exec();
         if(!foundToken){
@@ -110,7 +109,8 @@ const login = async (req:Request,res:Response<UserResponse>)=>{
     });
 
     authLogger(found.name,found.email,"login");
-    res.status(200).send({success:true,message:accessToken});
+    // res.status(200).send({success:true,message:accessToken});
+    res.status(200).send({success:true,message: {accessToken}});
 }
 
 
@@ -123,15 +123,18 @@ const refresh = async (req:Request,res:Response<UserResponse>)=>{
         msgLogger("jwt not found in cookies|refresh")
         return res.status(401).send({success:false,message:"UnAuthorised"})
     }
-    /* while refreshing clear this RT so after we can store new one */
+    /* while refreshing clear this RT ,so after we can store new one */
     const refreshToken = cookie.jwt;
     res.clearCookie('jwt',{httpOnly:true,sameSite:'none',secure:true})
 
     const foundUser = await UserSchema.findOne({refreshToken}).exec();
 
-    /*if NO RT found mean user is reusing it COZ at every refresh request jwt removed from cookies
-    * and also from database and this token is already removed.
-    * also don't understand this one*/
+    /*so we are using this for a specific schenerio where hacker somehow get your refresh token and try
+    * to send it with cookies. but we know when access token expire user request come here and check current
+    * RT suppose Z which is  present in DB which is obious. then server issued a new RT and AT to user and remove
+    * received token from cookies and DB.so hacker have your RT ,and it is valid,but it is removed from DB so
+    * we remove all RT from DB. but here is case when you request a new AT and RT and close app. and this token
+    * is also present in DB. and also valid obiously. with 1day expiry*/
     if(!foundUser){
         jwt.verify(refreshToken,config.REFRESH_TOKEN_SECRET,async (err:any,decoded:any)=>{
             if(err){
@@ -144,10 +147,10 @@ const refresh = async (req:Request,res:Response<UserResponse>)=>{
                 await hackedUser.save();
             }
         })
-        return res.status(403).send({success:false,message:"UnAuthorized/ expired or modified jwt in header|jwtVerify"});
+        return res.status(401).send({success:false,message:"UnAuthorized/RT not found in DB|jwtVerify"});
     }
 
-    const newRefreshTokenArray = foundUser.refreshToken.filter(rt=>rt!=refreshToken);
+    const newRefreshTokenArray:String[] = foundUser.refreshToken.filter(rt=>rt!=refreshToken);
 
     jwt.verify(refreshToken,config.REFRESH_TOKEN_SECRET,async (err:any,decoded:any)=>{
         if(err){
@@ -156,9 +159,9 @@ const refresh = async (req:Request,res:Response<UserResponse>)=>{
         }
         if(err || foundUser.email!==decoded.email){
             msgLogger("invalid jwt in cookies|refresh");
-            return res.status(401).send({success:false,message:"UnAuthorized"});
+            return res.status(403).send({success:false,message:"UnAuthorized/login expired"});
         }
-        /*untill here RT is still valid*/
+        /*until here RT is still valid*/
 
         const  userInfo:payloadIn  = {
             name:foundUser.name,
@@ -166,17 +169,36 @@ const refresh = async (req:Request,res:Response<UserResponse>)=>{
             roles:foundUser.roles
         }
         const roles:string[] = foundUser.roles;
-        const accessToken:string = jwt.sign({userInfo},config.ACCESS_TOKEN_SECRET,{expiresIn:'15m'})
+        const accessToken:string = jwt.sign({userInfo},config.ACCESS_TOKEN_SECRET,{expiresIn:'1s'})
 
         const newRefreshToken:string = jwt.sign({"email":foundUser.email},config.REFRESH_TOKEN_SECRET, {expiresIn:'1d'})
 
         foundUser.refreshToken = [...newRefreshTokenArray,newRefreshToken];
         res.cookie('jwt',newRefreshToken,{httpOnly:true,secure:true,sameSite:"none"})
 
-        res.status(200).send({success:true,message:{accessToken,roles}});
+        res.status(200).send({success:true,message:{accessToken:accessToken,roles}});
     });
 }
 
-export {login,register,refresh};
+// @desc logout
+// @route GET api/v1/auth/logOut
+// @access Public
+const logOut = async(req:Request,res:Response<UserResponse>)=>{
+    const cookies = req.cookies;
+    if(!cookies?.jwt){
+        return res.status(204).send({success:false,message:"jwt not found in cookies"})
+    }
+    const refreshToken = cookies.jwt;
+    const foundUser = await UserSchema.findOne({refreshToken});
+    if(!foundUser){
+        res.clearCookie('jwt',{httpOnly:true,sameSite:'none',secure:true});
+        return res.status(204).send({success:true,message:"jwt removed from cookies and but not found in DB"})
+    }
+    const newRefreshTokenArray = foundUser.refreshToken.filter((rt)=>rt!==refreshToken);
+    foundUser.refreshToken = [...newRefreshTokenArray];
+    await foundUser.save();
+    return res.status(204).send({success:true,message:"RT removed from DB and cookies"})
+}
+export {login,signup,refresh,logOut};
 
 

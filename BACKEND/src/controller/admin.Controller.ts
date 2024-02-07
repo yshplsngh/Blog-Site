@@ -58,7 +58,6 @@ const deleteUser = async(req:Request&dataToInsert,res:Response<UserResponse>)=>{
         const msg: string = returnMsg(isValid);
         return res.status(422).send({success: false, message: msg})
     }
-
     const user = await UserSchema.findById(isValid.data.id).exec();
     if(!user){
         return res.status(400).send({success:false,message:"User not found"})

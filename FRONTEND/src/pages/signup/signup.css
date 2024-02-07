@@ -1,0 +1,93 @@
+/* CSS for Signup Form */
+
+/* Main container */
+.signup-container {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f4f4f4;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Form inputs */
+.signup-input {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: border-color 0.3s ease;
+}
+
+.signup-input:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+/* Error messages */
+.error-message {
+    color: #dc3545;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+/* Submit button */
+.signup-button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.signup-button:hover {
+    background-color: #0056b3;
+}
+
+/* Animation for form */
+@keyframes slideIn {
+    from {
+        transform: translateY(-20px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Form animation */
+.signup-form {
+    animation: slideIn 0.5s ease;
+}
+
+/* Error animation */
+.error-animation {
+    animation: shake 0.5s ease;
+}
+
+@keyframes shake {
+    0% {
+        transform: translateX(0);
+    }
+    20% {
+        transform: translateX(-10px);
+    }
+    40% {
+        transform: translateX(10px);
+    }
+    60% {
+        transform: translateX(-10px);
+    }
+    80% {
+        transform: translateX(10px);
+    }
+    100% {
+        transform: translateX(0);
+    }
+}

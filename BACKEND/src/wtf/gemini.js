@@ -10,7 +10,16 @@ async function run() {
     // For text-only input, use the gemini-pro model
     const model = genAI.getGenerativeModel({ model: "gemini-pro"});
 
-    const prompt = "explain deep start-ups or provide some fact and number"+"for group discussion"
+    const prompt = `
+    Suppose you have built a neural network. You decide to initialize the weights and biases to be zero. Which of the following statements is True?
+    
+    (A) Each neuron in the first hidden layer will perform the same computation. So, even after multiple iterations of gradient descent, each neuron in the layer will be computing the same thing as other neurons.
+    
+    (B) Each neuron in the first hidden layer will perform the same computation in the first iteration. But after one iteration of gradient descent, they will learn to compute different things because we have “broken symmetry”.
+    
+    (C) Each neuron in the first hidden layer will compute the same thing, but neurons in different layers will compute different things; thus, we have accomplished “symmetry breaking” as described in the lecture.   
+    
+    (D) The first hidden layer’s neurons will perform different computations from each other even in the first iteration; their parameters will thus keep evolving in their own way.`
 
     const result = await model.generateContent(prompt);
     const response = await result.response;

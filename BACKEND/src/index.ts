@@ -1,5 +1,5 @@
 
-import express,{Application} from 'express';
+import express,{Application,Response,Request} from 'express';
 import mongoose from "mongoose";
 import process from "process";
 import cors from 'cors';
@@ -29,9 +29,12 @@ app.use(credentials);
 app.use(cors(corsOptions));
 app.use(express.json());
 /*for rich html form data*/
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: false}));
 app.use(cookieParser())
 
+app.get('/',(req:Request,res:Response)=>{
+    res.send("ppp");
+})
 
 app.use('/api/v1/auth',authRouter);
 app.use('/api/v1/note',noteRouter);
@@ -60,6 +63,7 @@ mongoose.connection.on('error',(err):void=>{
     console.log(msg.MCE+err);
 })
 mongoose.connection.on('disconnected',():void=>{
+    infoLogger(msg.MD);
     console.log(msg.MD);
 })
 process.on('SIGINT',():void=>{

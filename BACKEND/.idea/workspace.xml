@@ -5,14 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="08bf377d-2469-4061-944e-aea5ea94c733" name="Changes" comment="check rate-limiter">
-      <change afterPath="$PROJECT_DIR$/src/wtf/gemini.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/config.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/logs/serverInfo.log" beforeDir="false" afterPath="$PROJECT_DIR$/src/logs/serverInfo.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/wtf/geminiAI.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/wtf/geminiAI.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FRONTEND/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../FRONTEND/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FRONTEND/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../FRONTEND/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FRONTEND/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../FRONTEND/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FRONTEND/src/App/API/apiSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../FRONTEND/src/App/API/apiSlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FRONTEND/src/App/store.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../FRONTEND/src/App/store.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FRONTEND/src/features/auth/authApiSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../FRONTEND/src/features/auth/authApiSlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FRONTEND/src/features/auth/authSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../FRONTEND/src/features/auth/authSlice.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FRONTEND/src/main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../FRONTEND/src/main.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -28,7 +28,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/src/controller/note.Controller.ts" root0="FORCE_HIGHLIGHTING" />
@@ -61,7 +61,7 @@
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "terminal",
-    "ts.external.directory.path": "C:\\Users\\yashp\\OneDrive\\Desktop\\TODO\\node_modules\\typescript\\lib",
+    "ts.external.directory.path": "C:\\Users\\yashp\\OneDrive\\Desktop\\TODO\\BACKEND\\node_modules\\typescript\\lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -106,6 +106,7 @@
       <workItem from="1706294199236" duration="67000" />
       <workItem from="1706362410132" duration="561000" />
       <workItem from="1706363182939" duration="3387000" />
+      <workItem from="1707130448343" duration="1061000" />
     </task>
     <task id="LOCAL-00001" summary="check rate-limiter">
       <option name="closed" value="true" />

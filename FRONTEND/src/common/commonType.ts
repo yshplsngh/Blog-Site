@@ -1,0 +1,28 @@
+import {z} from "zod";
+
+export enum errMsg{
+    minLength="name should be min 3 length",
+    maxLength="name should be max 30 length",
+    isEmail="email should be correct type",
+    minPass="password should be min 5 length",
+    maxPass="password should be max 100 length"
+}
+
+export const isName = z.strictObject({
+    name:z.string()
+        .min(3,errMsg.minLength)
+        .max(30,errMsg.maxLength)
+        .trim(),
+})
+export const isEmail = z.strictObject({
+    email:z.string()
+        .trim()
+        .toLowerCase()
+        .email(errMsg.isEmail)
+})
+export const isPassword = z.strictObject({
+    password:z.string()
+        .trim()
+        .min(5,errMsg.minPass)
+        .max(100,errMsg.maxPass)
+})
