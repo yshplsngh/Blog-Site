@@ -42,3 +42,14 @@
 .home-links a.signup:hover {
     background-color: #0d8bf5;
 }
+
+.link {
+    margin-right: 10px;
+    background-color: #4CAF50; /* Green background color */
+    color: white; /* Text color */
+    padding: 10px 20px; /* Padding around the button text */
+    border: none; /* No border */
+    cursor: pointer; /* Cursor style on hover */
+    border-radius: 5px; /* Rounded corners */
+    text-decoration: none;
+}

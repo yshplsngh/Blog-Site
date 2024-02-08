@@ -2,7 +2,7 @@ import type {RootState} from "../store.ts";
 import {BaseQueryApi, fetchBaseQuery} from '@reduxjs/toolkit/query'
 import type {BaseQueryFn, FetchArgs, FetchBaseQueryError,} from '@reduxjs/toolkit/query/react'
 import {createApi} from "@reduxjs/toolkit/query/react";
-import {MessageResponse} from "../../features/auth/authType.ts";
+import {MessageResponse} from "../../Types/feature.auth.ts";
 import {logOut, setCredential} from "../../features/auth/authSlice.ts";
 
 

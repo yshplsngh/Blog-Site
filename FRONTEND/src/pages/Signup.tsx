@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { signupFormType, SignupFormSchema } from "./SignupTypes.ts";
-import { useSignupMutation } from "../../features/auth/authApiSlice.ts";
-import { errTypo } from "../../features/auth/authType.ts";
+import { signupFormType, SignupFormSchema } from "../Types/SignupTypes.ts";
+import { useSignupMutation } from "../features/auth/authApiSlice.ts";
+import { errTypo } from "../Types/feature.auth.ts";
 import { useNavigate } from "react-router-dom";
-import Loading from "../../components/loading/Loading.tsx";
+import Loading from "../components/Loading.tsx";
 
-import "./signup.css";
+import "../styles/pages/signup.css";
+import useTitle from "../hooks/useTitle.ts";
 
 const Signup = () => {
+    useTitle("Sign up")
     const navigate = useNavigate();
     const {
         register,

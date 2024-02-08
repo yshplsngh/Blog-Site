@@ -1,35 +1,37 @@
-import { SubmitHandler, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { LoginFormSchema } from "./LoginTypes.ts";
-import type { LoginFormType } from "./LoginTypes.ts";
-import { useLoginMutation } from "../../features/auth/authApiSlice.ts";
-import { useEffect, useState } from "react";
-import Loading from "../../components/loading/Loading.tsx";
-import { NavigateFunction, useNavigate } from "react-router-dom";
-import { errTypo, MessageResponse } from "../../features/auth/authType.ts";
-import { useDispatch } from "react-redux";
-import { setCredential } from "../../features/auth/authSlice.ts";
-import "./login.css"
+import {SubmitHandler, useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {LoginFormSchema} from "../Types/LoginTypes.ts";
+import type {LoginFormType} from "../Types/LoginTypes.ts";
+import {useLoginMutation} from "../features/auth/authApiSlice.ts";
+import {useEffect, useState} from "react";
+import Loading from "../components/Loading.tsx";
+import {Link, NavigateFunction, useNavigate} from "react-router-dom";
+import {errTypo, MessageResponse} from "../Types/feature.auth.ts";
+import {useDispatch} from "react-redux";
+import {setCredential} from "../features/auth/authSlice.ts";
+import "../styles/pages/login.css"
+import useTitle from "../hooks/useTitle.ts";
 
 const Login = () => {
+    useTitle("Login")
     const dispatch = useDispatch();
-
     const {
         register,
         handleSubmit,
-        formState: { errors, isValid },
-    } = useForm<LoginFormType>({ resolver: zodResolver(LoginFormSchema) });
+        formState: {errors, isValid},
+    } = useForm<LoginFormType>({resolver: zodResolver(LoginFormSchema)});
 
-    const [login, { isError, isLoading, isSuccess }] = useLoginMutation();
+    const [login, {isError, isLoading, isSuccess}] = useLoginMutation();
     const [errMsg, setErrMsg] = useState<string>("");
     const navigate: NavigateFunction = useNavigate();
 
-    const onSubmit: SubmitHandler<LoginFormType> = async (data:LoginFormType) => {
+    const onSubmit: SubmitHandler<LoginFormType> = async (data: LoginFormType) => {
         if (isValid) {
             try {
-                const res:MessageResponse = await login(data).unwrap() as MessageResponse;
+                const res: MessageResponse = await login(data).unwrap() as MessageResponse;
                 console.log(res);
                 dispatch(setCredential(res.message));
+
             } catch (err) {
                 const er: errTypo = err as errTypo;
                 setErrMsg(er.data.message);
@@ -46,7 +48,7 @@ const Login = () => {
     }, [isSuccess, navigate]);
 
     if (isLoading) {
-        return <Loading />;
+        return <Loading/>;
     }
 
     return (
@@ -76,7 +78,9 @@ const Login = () => {
                 )}
 
                 <button type="submit">Login</button>
+                <Link to={'/signup'} className={'signup'}>Sign up</Link>
             </form>
+
         </div>
     );
 };

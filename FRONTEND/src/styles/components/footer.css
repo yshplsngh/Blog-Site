@@ -1,0 +1,33 @@
+/* Footer container */
+footer {
+    position: relative; /* Positioned at the bottom */
+    bottom: 0;
+    width: 100%; /* Takes up full width of the screen */
+    background-color: #f0f0f0; /* Light color for the background */
+    padding: 20px; /* Padding around the content */
+    display: flex; /* Use flexbox layout for content alignment */
+}
+
+/* Apply 10px right margin to all child tags of footer */
+footer * {
+    margin-right: 30px;
+}
+footer p{
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+/* Button styling */
+button {
+    background-color: #4CAF50; /* Green background color */
+    color: white; /* Text color */
+    padding: 10px 20px; /* Padding around the button text */
+    border: none; /* No border */
+    cursor: pointer; /* Cursor style on hover */
+    border-radius: 5px; /* Rounded corners */
+}
+
+/* Button hover effect */
+button:hover {
+    background-color: #45a049; /* Darker green on hover */
+}

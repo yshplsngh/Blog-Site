@@ -45,3 +45,9 @@
     color: red;
     font-size: 14px;
 }
+.signup{
+    text-decoration: underline;
+    font-size: 20px;
+    font-weight: 500;
+    float: right;
+}

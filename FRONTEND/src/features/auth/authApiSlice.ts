@@ -3,6 +3,7 @@ import {logOut, setCredential} from "./authSlice.ts";
 
 export const authApiSlice = apiSlice.injectEndpoints({
     endpoints:builder=> ({
+
         login: builder.mutation({
             query: credentials =>({
               url:'auth/login',
@@ -24,13 +25,14 @@ export const authApiSlice = apiSlice.injectEndpoints({
                 url:'auth/refresh',
                 method:'GET'
             }),
-            async onQueryStarted(_,{dispatch,queryFulfilled}){
+            async onQueryStarted(arg,{dispatch,queryFulfilled}){
                 try{
+                    console.log("refsre"+arg);
                     const {data} = await queryFulfilled
                     const accessToken = data.message.accessToken
                     dispatch(setCredential({accessToken}))
                 }catch(err){
-                    console.log(err+"appa")
+                    console.log(err+"refresh")
                 }
             }
         }),
@@ -38,19 +40,18 @@ export const authApiSlice = apiSlice.injectEndpoints({
         sendLogOut:builder.mutation({
             query:()=>({
                 url:'/auth/logOut',
-                method:"GET"
+                method:"POST"
             }),
-            async onQueryStarted(_,{dispatch,queryFulfilled}){
+            async onQueryStarted(arg,{dispatch,queryFulfilled}){
                 try {
+                    // console.log(arg)
                     await queryFulfilled
-                    // console.log(data)
-                    dispatch(logOut())
+                    dispatch(logOut(arg))
                     setTimeout(()=>{
-                        dispatch(apiSlice.util?.resetApiState())
+                        dispatch(apiSlice.util.resetApiState())
                     },1000)
                 }catch (err){
-                    // console.log(err)
-                    console.log(err+"appa")
+                    console.log(err)
                 }
             }
         })
@@ -59,5 +60,6 @@ export const authApiSlice = apiSlice.injectEndpoints({
 
 export const {
     useLoginMutation,
-    useSignupMutation
+    useSignupMutation,
+    useSendLogOutMutation
 } = authApiSlice

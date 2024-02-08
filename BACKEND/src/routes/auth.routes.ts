@@ -7,6 +7,6 @@ import { JWTverify } from "../middleware/JWTverification"
 router.route('/login').post(login)
 router.route('/signup').post(signup)
 router.route('/refresh').get(refresh)
-router.route('/logOut').get(logOut)
+router.route('/logOut').post(logOut)
 
 export {router as authRouter}
