@@ -1,7 +1,6 @@
 import {SubmitHandler, useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
-import {LoginFormSchema} from "../Types/LoginTypes.ts";
-import type {LoginFormType} from "../Types/LoginTypes.ts";
+import {LoginFormSchema,LoginFormType} from "../Types/pages.component.ts";
 import {useLoginMutation} from "../features/auth/authApiSlice.ts";
 import {useEffect, useState} from "react";
 import Loading from "../components/Loading.tsx";
@@ -21,6 +20,7 @@ const Login = () => {
         formState: {errors, isValid},
     } = useForm<LoginFormType>({resolver: zodResolver(LoginFormSchema)});
 
+
     const [login, {isError, isLoading, isSuccess}] = useLoginMutation();
     const [errMsg, setErrMsg] = useState<string>("");
     const navigate: NavigateFunction = useNavigate();
@@ -34,7 +34,9 @@ const Login = () => {
 
             } catch (err) {
                 const er: errTypo = err as errTypo;
-                setErrMsg(er.data.message);
+                console.log(err)
+                console.log(er)
+                setErrMsg(er?.data?.message);
             }
         }
     };

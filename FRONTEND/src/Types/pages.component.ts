@@ -8,21 +8,27 @@ export enum errMsg{
     maxPass="password should be max 100 length"
 }
 
-export const isName = z.strictObject({
+const isName = z.strictObject({
     name:z.string()
         .min(3,errMsg.minLength)
         .max(30,errMsg.maxLength)
         .trim(),
 })
-export const isEmail = z.strictObject({
+const isEmail = z.strictObject({
     email:z.string()
         .trim()
         .toLowerCase()
         .email(errMsg.isEmail)
 })
-export const isPassword = z.strictObject({
+const isPassword = z.strictObject({
     password:z.string()
         .trim()
         .min(5,errMsg.minPass)
         .max(100,errMsg.maxPass)
 })
+
+export const  LoginFormSchema= isEmail.merge(isPassword)
+export type LoginFormType = z.infer<typeof LoginFormSchema>
+
+export const SignupFormSchema = isName.merge(isEmail).merge(isPassword)
+export type  signupFormType = z.infer<typeof SignupFormSchema>

@@ -1,0 +1,32 @@
+.view-note-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    background-color: #292929;
+    color: #fff;
+    padding: 20px;
+}
+
+.note-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.created-updated {
+    font-size: 14px;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.desc {
+    font-size: 18px;
+}
+
+@media (max-width: 768px) {
+    .view-note-container {
+        grid-template-columns: 1fr;
+    }
+}

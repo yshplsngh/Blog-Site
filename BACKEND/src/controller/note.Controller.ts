@@ -50,7 +50,7 @@ const getAllNotes = async (req: Request & dataToInsert,res:Response<UserResponse
         const userData = await UserSchema.findById(note.user).select('email').lean().exec();
         return {...note, email: userData?.email}
     }))
-    res.status(201).send({success:true,message:notesWithUser})
+    res.status(200).send({success:true,message:notesWithUser})
 }
 
 
@@ -92,7 +92,7 @@ const deleteNote = async (req: Request & dataToInsert, res:Response<UserResponse
 
     await note.deleteOne();
     const reply: string = `${req.email}, note deleted with id ${isValid.data.id}`
-    res.status(201).send({success: true, message: reply});
+    res.status(200).send({success: true, message: reply});
 }
 
 export {createNote, getAllNotes, updateNote, deleteNote};

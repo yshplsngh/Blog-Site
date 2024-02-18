@@ -1,0 +1,88 @@
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* NoteList Styles */
+.note-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    gap: 20px;
+}
+
+/* SingleNoteRow Styles */
+.single-note {
+    background-color: #292929;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+.single-note p {
+    margin: 5px 0;
+}
+
+.note__created,
+.note__updated {
+    font-style: italic;
+    color: #fff;
+}
+
+.note__title {
+    font-weight: bold;
+    color: #fff;
+}
+
+.note__username {
+    color: #fff;
+}
+
+.edit-button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.edit-button:hover {
+    background-color: #45a049;
+}
+
+/* Loading Styles */
+.loading {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px; /* Adjust as needed */
+}
+
+.loading-spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #3498db;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+.offScreen{
+    visibility: hidden;
+}
+.showMsg{
+    visibility: visible;
+}

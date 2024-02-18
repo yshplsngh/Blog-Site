@@ -1,0 +1,54 @@
+.edit-note-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 70vh;
+    background-color: #292929;
+    color: #fff;
+}
+
+.form-container {
+    width: 400px;
+    margin-top: 20px;
+}
+
+input[type='text'] {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #333;
+    color: #fff;
+}
+input[type='textarea'] {
+    width: 100%;
+    height: 20vh;
+    /*padding: 10px;*/
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #333;
+    color: #fff;
+    word-wrap: break-word;
+}
+
+button[type='submit'] {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50; /* Green */
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button[type='submit']:hover {
+    background-color: #45a049; /* Darker Green */
+}
+
+.error-message {
+    color: #ff0033; /* Red */
+}

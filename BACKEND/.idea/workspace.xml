@@ -5,14 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="08bf377d-2469-4061-944e-aea5ea94c733" name="Changes" comment="check rate-limiter">
-      <change beforePath="$PROJECT_DIR$/../FRONTEND/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../FRONTEND/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FRONTEND/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../FRONTEND/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../FRONTEND/src/Types/feature.note.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../FRONTEND/src/features/auth/prefetch.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../FRONTEND/src/pages/Notes/SingleNoteRow.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../FRONTEND/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../FRONTEND/src/App.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../FRONTEND/src/App/API/apiSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../FRONTEND/src/App/API/apiSlice.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FRONTEND/src/App/store.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../FRONTEND/src/App/store.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FRONTEND/src/features/auth/authApiSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../FRONTEND/src/features/auth/authApiSlice.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FRONTEND/src/features/auth/authSlice.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../FRONTEND/src/features/auth/authSlice.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../FRONTEND/src/main.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../FRONTEND/src/main.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FRONTEND/src/components/Footer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../FRONTEND/src/components/Footer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FRONTEND/src/hooks/useAuth.ts" beforeDir="false" afterPath="$PROJECT_DIR$/../FRONTEND/src/hooks/useAuth.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../FRONTEND/src/pages/Notes.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/../FRONTEND/src/pages/Notes/NotesList.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,24 +47,24 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Node.js.gemini.js.executor": "Run",
-    "Node.js.rateLimiter.js.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "terminal",
-    "ts.external.directory.path": "C:\\Users\\yashp\\OneDrive\\Desktop\\TODO\\BACKEND\\node_modules\\typescript\\lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Node.js.gemini.js.executor&quot;: &quot;Run&quot;,
+    &quot;Node.js.rateLimiter.js.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;terminal&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\yashp\\OneDrive\\Desktop\\TODO\\BACKEND\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Node.js.gemini.js">
     <configuration name="gemini.js" type="NodeJSConfigurationType" temporary="true" nameIsGenerated="true" path-to-js-file="$PROJECT_DIR$/src/wtf/gemini.js" working-dir="$PROJECT_DIR$/src/wtf">
       <method v="2" />
@@ -107,6 +107,7 @@
       <workItem from="1706362410132" duration="561000" />
       <workItem from="1706363182939" duration="3387000" />
       <workItem from="1707130448343" duration="1061000" />
+      <workItem from="1707454703908" duration="7159000" />
     </task>
     <task id="LOCAL-00001" summary="check rate-limiter">
       <option name="closed" value="true" />

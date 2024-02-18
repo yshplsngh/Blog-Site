@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
+
+:root {
+    /* COLORS */
+    --BGCOLOR: #0F172A;
+    --BORDER-COLOR: #FFF;
+    --COLOR: #FFF;
+    --ERROR: firebrick;
+    --INACTIVE: lightgray;
+    --LINK-COLOR: whitesmoke;
+    --LINK-HOVER: rgba(245, 245, 245, 0.9);
+    --NOTE-BGCOLOR: hsla(240, 64%, 27%, 0.65);
+    --STATUS-COMPLETE: limegreen;
+    --STATUS-OPEN: firebrick;
+    --TABLE-BGCOLOR: #FFF;
+    --TABLE-COLOR: #000;
+    --INPUT-INVALID: #F00;
+}
+
+
+body {
+    font-family: 'Nunito', sans-serif;
+    min-height: 100vh;
+    background-color: var(--BGCOLOR);
+    background-size: cover;
+    background-position: top right;
+    background-blend-mode: multiply;
+    color: white;
+}

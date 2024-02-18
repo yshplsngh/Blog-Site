@@ -29,7 +29,7 @@ const signup = async (req: Request, res: Response<UserResponse>) => {
         name: isValid.data.name,
         email: isValid.data.email,
         password: hashedPass,
-        roles: ['people','admin'],
+        roles: ['people'],
         isActive: true,
         notes: [],
         refreshToken: []
@@ -76,7 +76,7 @@ const login = async (req: Request, res: Response<UserResponse>) => {
 
     const accessToken: string = jwt.sign(
         {userInfo}, config.ACCESS_TOKEN_SECRET,
-        {expiresIn: '1s'});
+        {expiresIn: '15m'});
 
     const newRefreshToken: string = jwt.sign(
         {"email": found.email}, config.REFRESH_TOKEN_SECRET,
@@ -99,7 +99,8 @@ const login = async (req: Request, res: Response<UserResponse>) => {
 
     found.refreshToken = [...newRefreshTokenArray, newRefreshToken];
 
-    await found.save();
+    const result = await found.save();
+    // console.log(result)
 
     res.cookie('jwt', newRefreshToken, {
         maxAge: 7 * 24 * 60 * 60 * 1000, httpOnly: true,
@@ -123,9 +124,11 @@ const refresh = async (req: Request, res: Response<UserResponse>) => {
     }
     /* while refreshing clear this RT ,so after we can store new one */
     const refreshToken = cookie.jwt;
+    // console.log(refresh+"=="+refreshToken)
     res.clearCookie('jwt', {httpOnly: true, sameSite: 'none', secure: true})
 
     const foundUser = await UserSchema.findOne({refreshToken}).exec();
+    // console.log(foundUser);
 
     /*so we are using this for a specific schenerio where hacker somehow get your refresh token and try
     * to send it with cookies. but we know when access token expire user request come here and check current
@@ -133,6 +136,7 @@ const refresh = async (req: Request, res: Response<UserResponse>) => {
     * received token from cookies and DB.so hacker have your RT ,and it is valid,but it is removed from DB so
     * we remove all RT from DB. but here is case when you request a new AT and RT and close app. and this token
     * is also present in DB. and also valid obiously. with 1day expiry*/
+
     if (!foundUser) {
         jwt.verify(refreshToken, config.REFRESH_TOKEN_SECRET, async (err: any, decoded: any) => {
             if (err) {
@@ -140,6 +144,7 @@ const refresh = async (req: Request, res: Response<UserResponse>) => {
                 return res.status(401).send({success: false, message: "UnAuthorized"});
             }
             const hackedUser = await UserSchema.findOne({email: decoded.email}).exec();
+            // console.log(hackedUser);
             if (hackedUser !== null) {
                 hackedUser.refreshToken = [];
                 await hackedUser.save();
@@ -167,11 +172,12 @@ const refresh = async (req: Request, res: Response<UserResponse>) => {
             roles: foundUser.roles
         }
         const roles: string[] = foundUser.roles;
-        const accessToken: string = jwt.sign({userInfo}, config.ACCESS_TOKEN_SECRET, {expiresIn: '1s'})
+        const accessToken: string = jwt.sign({userInfo}, config.ACCESS_TOKEN_SECRET, {expiresIn: '15m'})
 
         const newRefreshToken: string = jwt.sign({"email": foundUser.email}, config.REFRESH_TOKEN_SECRET, {expiresIn: '1d'})
 
         foundUser.refreshToken = [...newRefreshTokenArray, newRefreshToken];
+        await foundUser.save();
         res.cookie('jwt', newRefreshToken, {httpOnly: true, secure: true, sameSite: "none"})
 
         res.status(200).send({success: true, message: {accessToken: accessToken, roles}});

@@ -3,7 +3,6 @@ footer {
     position: relative; /* Positioned at the bottom */
     bottom: 0;
     width: 100%; /* Takes up full width of the screen */
-    background-color: #f0f0f0; /* Light color for the background */
     padding: 20px; /* Padding around the content */
     display: flex; /* Use flexbox layout for content alignment */
 }

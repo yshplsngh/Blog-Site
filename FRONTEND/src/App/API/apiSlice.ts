@@ -20,10 +20,11 @@ const baseQuery = fetchBaseQuery({
 
 const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (args: string | FetchArgs, api: BaseQueryApi, extraOptions) => {
     let result = await baseQuery(args, api, extraOptions);
-    // console.log(result);
+    console.log(result);
     if (result.error && result?.error?.status == 403) {
-        // console.log(result);
+        console.log('send refreshing route')
         const refreshResult = await baseQuery('auth/refresh', api, extraOptions)
+        console.log(refreshResult)
         const fixRefreshResult = refreshResult.data ? {data: refreshResult.data as MessageResponse} : {error: refreshResult.error as FetchBaseQueryError}
         if (fixRefreshResult.data) {
             api.dispatch(setCredential(fixRefreshResult.data.message))

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { signupFormType, SignupFormSchema } from "../Types/SignupTypes.ts";
+import { signupFormType, SignupFormSchema } from "../Types/pages.component.ts";
 import { useSignupMutation } from "../features/auth/authApiSlice.ts";
 import { errTypo } from "../Types/feature.auth.ts";
 import { useNavigate } from "react-router-dom";
@@ -29,7 +29,7 @@ const Signup = () => {
                 console.log(res);
             } catch (err) {
                 const er: errTypo = err as errTypo;
-                setErrMsg(er.data.message);
+                setErrMsg(er?.data?.message);
             }
         }
     };
