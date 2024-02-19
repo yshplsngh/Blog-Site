@@ -43,7 +43,7 @@
     background-color: #0d8bf5;
 }
 
-.link {
+.link , .logoutBut{
     margin-right: 10px;
     background-color: #4CAF50; /* Green background color */
     color: white; /* Text color */

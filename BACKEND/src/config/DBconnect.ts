@@ -10,4 +10,3 @@ const dbConnect = async ():Promise<void> => {
     }
 };
 export { dbConnect };
-

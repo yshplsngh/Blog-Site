@@ -77,7 +77,6 @@ app.use('/api/v1/user',userRouter);
 
 
 app.use(errorLogger);
-
 mongoose.connection.on('open', ():void => {
     infoLogger(msg.MCO);
     console.log(msg.MCO);

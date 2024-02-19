@@ -1,0 +1,53 @@
+.not-found-container {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.content {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.captain-america-img {
+    width: 200px;
+    margin-top: 20px;
+    border-radius: 50%; /* To make the image round */
+}
+
+.error-image-animate {
+    width: 400px;
+    height: 400px;
+    pointer-events: none;
+    opacity: .5;
+    background-image: url('../../assets/gl1.png'),url('../../assets/gl2.png'),url('../../assets/gl3.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    margin: 0 auto;
+    animation: glitch .5s linear infinite;
+    position: absolute;
+    top: 30vh;
+}
+
+@keyframes glitch {
+    0% {
+        background-position: 50%,50%,50%
+    }
+
+    25% {
+        background-position: 50%,-5px 2px,4px 5px
+    }
+
+    50% {
+        background-position: 50%,2px 6px,-1px -1px
+    }
+
+    75% {
+        background-position: 50%,-2px 4px,4px 8px
+    }
+
+    to {
+        background-position: 50%,3px 7px,-3px 0
+    }
+}

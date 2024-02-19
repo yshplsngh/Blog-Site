@@ -52,7 +52,7 @@ const Signup = () => {
                 {isError && <p className="error-message">{errMsg}</p>}
                 <label htmlFor="name">Name:</label>
                 <input
-                    {...register("name")}
+                    {...register("name",{required:true})}
                     className="signup-input"
                     placeholder="John dev"
                     type="text"
@@ -61,7 +61,7 @@ const Signup = () => {
                 {errors.name && <p className="error-message">{errors.name?.message}</p>}
                 <label htmlFor="email">Email:</label>
                 <input
-                    {...register("email")}
+                    {...register("email",{required:true})}
                     className="signup-input"
                     placeholder="xyz@gmail.com"
                     type="email"
@@ -70,7 +70,7 @@ const Signup = () => {
                 {errors.email && <p className="error-message">{errors.email?.message}</p>}
                 <label htmlFor="password">Password:</label>
                 <input
-                    {...register("password")}
+                    {...register("password",{required:true})}
                     className="signup-input"
                     type="password"
                     id="password"

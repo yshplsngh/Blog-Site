@@ -30,6 +30,16 @@ export const notesApiSlice = apiSlice.injectEndpoints({
                 }else return [{type:'Note',id:'LIST'}]
             }
         }),
+        createNote:builder.mutation({
+            query:initialData=>({
+                url:'note/createNote',
+                method:'POST',
+                body:{...initialData}
+            }),
+            invalidatesTags:()=>[
+                {type:'Note',id:'LIST'}
+            ]
+        }),
         updateNote:builder.mutation({
             query:initialNote=>({
                 url:'note/updateNote',
@@ -55,6 +65,7 @@ export const notesApiSlice = apiSlice.injectEndpoints({
 
 export const {
     useGetNotesQuery,
+    useCreateNoteMutation,
     useUpdateNoteMutation,
     useDeleteNoteMutation
 } = notesApiSlice

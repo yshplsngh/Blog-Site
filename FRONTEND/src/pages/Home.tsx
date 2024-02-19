@@ -7,7 +7,7 @@ import Loading from "../components/Loading.tsx";
 import useTitle from "../hooks/useTitle.ts";
 
 const Home = () => {
-    const {username} = useAuth()
+    const {username,isAdmin} = useAuth()
     const [sendLogOut,{isLoading}] = useSendLogOutMutation()
     useTitle("Home")
 
@@ -23,8 +23,9 @@ const Home = () => {
             <div className="home-container">
                 <h1>Landing page</h1>
                 <Link to={'/dash'} className={'link'}>DashBoard</Link>
-                <button onClick={sendLogOut}>Logout</button>
-                {username && <h2>You are already logged In</h2>}
+                <button onClick={sendLogOut} className={'logoutBut'}>Logout</button>
+                {isAdmin && <p>Welcome Back Admin</p>}
+                {!isAdmin && <p>Welcome User</p>}
             </div>
         )
     }

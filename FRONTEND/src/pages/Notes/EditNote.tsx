@@ -75,7 +75,7 @@ const EditNote = () => {
                 <input
                     type={'text'}
                     id={'title'}
-                    {...register('title')}
+                    {...register('title',{required:true})}
                     placeholder={'title-'}
                 />
                 {errors.title && <p className="error-message">{errors.title?.message}</p>}
@@ -83,7 +83,7 @@ const EditNote = () => {
                 <input
                     type={'textarea'}
                     id={'desc'}
-                    {...register('desc')}
+                    {...register('desc',{required:true})}
                     placeholder={'desc-'}
                 />
                 {errors.desc && <p className="error-message">{errors.desc?.message}</p>}

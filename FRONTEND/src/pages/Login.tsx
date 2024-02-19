@@ -61,7 +61,7 @@ const Login = () => {
                 <input
                     type="email"
                     id="email"
-                    {...register("email")}
+                    {...register("email",{required:true})}
                     placeholder="xyz@gmail.com"
                 />
                 {errors.email && (
@@ -72,7 +72,7 @@ const Login = () => {
                 <input
                     type="password"
                     id="password"
-                    {...register("password")}
+                    {...register("password",{required:true})}
                     placeholder="password"
                 />
                 {errors.password && (
