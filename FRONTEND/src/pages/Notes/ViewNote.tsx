@@ -1,12 +1,15 @@
-import { useParams } from "react-router-dom";
+import {useLocation, useParams} from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../App/store.ts";
-import { selectNoteById } from "../../features/Note/notesApiSlice.ts";
 import { resNotesArrayType } from "../../Types/feature.note.ts";
 import '../../styles/pages/notes/viewnote.css'
+import {ownSelector} from "../../features/Note/selector.ts";
 
 const ViewNote = () => {
     const { noteId } = useParams();
+    const location = useLocation()
+
+    const {selectNoteById}= ownSelector(location.state.email)
 
     const note = useSelector((state: RootState) =>
         selectNoteById(state, String(noteId))
@@ -34,7 +37,7 @@ const ViewNote = () => {
                 </div>
             </div>
         );
-    }else return <h1>not found</h1>
+    }else return <h1>Note not found</h1>
 };
 
 export default ViewNote;

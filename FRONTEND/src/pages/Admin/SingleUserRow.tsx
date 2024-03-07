@@ -39,7 +39,9 @@ const SingleUserRow = React.memo(({userId}: userIdType) => {
 
     let content;
     if (user as resUsersArrayType) {
-        const handleView = () => navigate(`/dash/users/detail/${userId}`)
+        const handleView = () => {
+            navigate(`/dash/users/detail/${userId}`)
+        }
         const handleDelete = async () => {
             await deleteUser({id: userId})
         }

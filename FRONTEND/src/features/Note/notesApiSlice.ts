@@ -1,7 +1,6 @@
 import {apiSlice} from "../../App/API/apiSlice.ts";
 import {resNotesArrayType, resType} from "../../Types/feature.note.ts";
-import {createEntityAdapter, createSelector} from "@reduxjs/toolkit";
-import {RootState} from "../../App/store.ts";
+import {createEntityAdapter} from "@reduxjs/toolkit";
 
 
 export const notesAdapter = createEntityAdapter()
@@ -72,16 +71,5 @@ export const {
     useDeleteNoteMutation
 } = notesApiSlice
 
-const selectNotesResult = notesApiSlice.endpoints.getNotes.select('papa@gmail.com');
 
-const selectNotesData = createSelector(
-    selectNotesResult,
-    (notesResult)=>notesResult.data
-)
-
-export const {
-    selectAll: selectAllNotes,
-    selectById: selectNoteById,
-    selectIds: selectNoteIds
-} = notesAdapter.getSelectors((state:RootState)=>selectNotesData(state) ?? notesInitialState)
 

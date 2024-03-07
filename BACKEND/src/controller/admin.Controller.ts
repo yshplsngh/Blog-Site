@@ -27,34 +27,6 @@ const getUsers = async (req:Request&dataToInsert,res:Response<UserResponse>) =>{
 }
 
 
-// @desc get all user notes by email
-// @route POST api/v1/admin/users
-// @access private
-// const getAllNotesByEmail = async (req: Request & dataToInsert,res:Response<UserResponse>) => {
-//     // console.log(req.body)
-//     const isValid = isEmail.safeParse(req.body);
-//     if (!isValid.success){
-//         const msg: string = returnMsg(isValid);
-//         return res.status(422).send({success: false, message: msg})
-//     }
-//
-//     /*here we need _id to get all notes of that user*/
-//     const found = await UserSchema.findOne({email:isValid.data.email}).select('_id').lean().exec();
-//     if (!found) {
-//         return res.status(401).send({success: false, message: "user not found"})
-//     }
-//     console.log(found)
-//     const notes = await NoteSchema.find({user: found._id}).lean().exec();
-//     console.log(notes)
-//     /* no use, but just for shake, understand use of Promise.all , so here i am adding email to each note*/
-//     const notesWithUser = await Promise.all(notes.map(async (note) => {
-//         const userData = await UserSchema.findById(note.user).select('email').lean().exec();
-//         return {...note, email: userData?.email}
-//     }))
-//     res.status(200).send({success:true,message:notesWithUser})
-// }
-
-
 // @desc update user info
 // @route PATCH api/v1/admin/users
 // @access Private

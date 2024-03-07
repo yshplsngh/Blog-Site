@@ -1,8 +1,8 @@
 import useTitle from "../../hooks/useTitle.ts";
-import {useNavigate, useParams} from "react-router-dom";
+import {useLocation, useNavigate, useParams} from "react-router-dom";
 import {useSelector} from "react-redux";
 import {RootState} from "../../App/store.ts";
-import {selectNoteById, useUpdateNoteMutation} from "../../features/Note/notesApiSlice.ts";
+import { useUpdateNoteMutation} from "../../features/Note/notesApiSlice.ts";
 import {resNotesArrayType} from "../../Types/feature.note.ts";
 import Loading from "../../components/Loading.tsx";
 import {SubmitHandler, useForm} from "react-hook-form";
@@ -11,11 +11,15 @@ import {EditNoteFormSchema, EditNoteFormType, isNoteId} from "../../Types/pages.
 import {errTypo} from "../../Types/feature.auth.ts";
 import {useEffect} from "react";
 import '../../styles/pages/notes/editnote.css'
+import {ownSelector} from "../../features/Note/selector.ts";
 
 const EditNote = () => {
     useTitle('Edit Note')
     const navigate = useNavigate()
     const {noteId} = useParams()
+    const location = useLocation()
+
+    const {selectNoteById}= ownSelector(location.state.email)
     const isIdValid = isNoteId.safeParse({noteId});
     let errContent: string = ''
 
@@ -50,7 +54,7 @@ const EditNote = () => {
 
     useEffect(() => {
         if (isSuccess) {
-            navigate('/dash/notes')
+            navigate(location.state?.prevUrl)
         }
     }, [isSuccess, navigate]);
 
@@ -60,13 +64,7 @@ const EditNote = () => {
     }
 
     let content;
-    if (!isIdValid.success) {
-        content = <p>Invalid note in URL</p>
-    }
 
-    if (isLoading || (isIdValid.success && !note)) {
-        content = <Loading/>
-    }
     if (note as resNotesArrayType) {
         content = (
             <div className="edit-note-container">
@@ -93,6 +91,16 @@ const EditNote = () => {
             </div>
         )
     }
+    else if (!isIdValid.success) {
+        content = <p>Invalid note in URL</p>
+    }
+    else if (isLoading || (isIdValid.success && !note)) {
+        content = <Loading/>
+    }
+    else{
+        content = <h1>Notes found | something went wrong</h1>
+    }
+
     return content
 }
 
