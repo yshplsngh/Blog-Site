@@ -74,6 +74,13 @@ const login = async (req: Request, res: Response<UserResponse>) => {
 
     const userInfo: payloadIn = {name: found.name, email: found.email, roles: found.roles};
 
+
+    /* here is schenerio when user log in and if RT token is present in cookies then-
+    * that RT will we deleted from DB and new one will be inserted in that array
+    * and that RT will be replaced with new one.
+    * BUT-> if user clear their cookies then no RT will found in cookies and then DB RT array
+    * will be same. and we issue a new RT and add new RT to DB and cookies
+    * so DB RT array will continue to increase if user clear their cookies before login*/
     const accessToken: string = jwt.sign(
         {userInfo}, config.ACCESS_TOKEN_SECRET,
         {expiresIn: '15m'});
@@ -83,9 +90,10 @@ const login = async (req: Request, res: Response<UserResponse>) => {
         {expiresIn: '1d'}
     )
     /*store all refresh token except current user one*/
-    let newRefreshTokenArray: String[] = !cookies?.jwt ?
+    let newRefreshTokenArray:string[] = !cookies?.jwt ?
         found.refreshToken : found.refreshToken.filter(rt => rt !== cookies.jwt)
 
+    /*to underStand refer refresh endpoint*/
     if (cookies?.jwt) {
         const refreshToken = cookies.jwt
         const foundToken = await UserSchema.findOne({refreshToken}).exec();
@@ -120,7 +128,7 @@ const refresh = async (req: Request, res: Response<UserResponse>) => {
     const cookie = req.cookies;
     if (!cookie?.jwt) {
         msgLogger("jwt not found in cookies|refresh")
-        return res.status(401).send({success: false, message: "UnAuthorised"})
+        return res.status(401).send({success: false, message: "UnAuthorised/ RT not found in cookies DR refreshing"})
     }
     /* while refreshing clear this RT ,so after we can store new one */
     const refreshToken = cookie.jwt;
@@ -132,7 +140,7 @@ const refresh = async (req: Request, res: Response<UserResponse>) => {
 
     /*so we are using this for a specific schenerio where hacker somehow get your refresh token and try
     * to send it with cookies. but we know when access token expire user request come here and check current
-    * RT suppose Z which is  present in DB which is obious. then server issued a new RT and AT to user and remove
+    * RT. suppose Z which is  present in DB which is obious. then server issued a new RT and AT to user and remove
     * received token from cookies and DB.so hacker have your RT ,and it is valid,but it is removed from DB so
     * we remove all RT from DB. but here is case when you request a new AT and RT and close app. and this token
     * is also present in DB. and also valid obiously. with 1day expiry*/
@@ -150,10 +158,10 @@ const refresh = async (req: Request, res: Response<UserResponse>) => {
                 await hackedUser.save();
             }
         })
-        return res.status(401).send({success: false, message: "UnAuthorized/RT not found in DB|jwtVerify"});
+        return res.status(401).send({success: false, message: "UnAuthorized/RT not found in DB|refresh"});
     }
 
-    const newRefreshTokenArray: String[] = foundUser.refreshToken.filter(rt => rt != refreshToken);
+    const newRefreshTokenArray:string[] = foundUser.refreshToken.filter(rt => rt != refreshToken);
 
     jwt.verify(refreshToken, config.REFRESH_TOKEN_SECRET, async (err: any, decoded: any) => {
         if (err) {

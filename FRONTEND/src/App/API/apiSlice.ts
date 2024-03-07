@@ -3,7 +3,7 @@ import {BaseQueryApi, fetchBaseQuery} from '@reduxjs/toolkit/query'
 import type {BaseQueryFn, FetchArgs, FetchBaseQueryError,} from '@reduxjs/toolkit/query/react'
 import {createApi} from "@reduxjs/toolkit/query/react";
 import {MessageResponse} from "../../Types/feature.auth.ts";
-import {logOut, setCredential} from "../../features/auth/authSlice.ts";
+import {logOut, resetError, setCredential} from "../../features/auth/authSlice.ts";
 
 
 const baseQuery = fetchBaseQuery({
@@ -18,7 +18,7 @@ const baseQuery = fetchBaseQuery({
     }
 });
 
-const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (args: string | FetchArgs, api: BaseQueryApi, extraOptions) => {
+const baseQueryWithReAuth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQueryError> = async (args: string | FetchArgs, api: BaseQueryApi, extraOptions) => {
     let result = await baseQuery(args, api, extraOptions);
     console.log(result);
     if (result.error && result?.error?.status == 403) {
@@ -26,11 +26,14 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
         const refreshResult = await baseQuery('auth/refresh', api, extraOptions)
         console.log(refreshResult)
         const fixRefreshResult = refreshResult.data ? {data: refreshResult.data as MessageResponse} : {error: refreshResult.error as FetchBaseQueryError}
-        if (fixRefreshResult.data) {
+        // console.log(fixRefreshResult);
+        if (fixRefreshResult.data){
             api.dispatch(setCredential(fixRefreshResult.data.message))
             result = await baseQuery(args, api, extraOptions)
         } else {
+            console.log('wrong refresh')
             api.dispatch(logOut())
+            api.dispatch(resetError())
             return fixRefreshResult;
         }
     }
@@ -39,7 +42,7 @@ const baseQueryWithReauth: BaseQueryFn<string | FetchArgs, unknown, FetchBaseQue
 
 
 export const apiSlice = createApi({
-    baseQuery: baseQueryWithReauth,
+    baseQuery: baseQueryWithReAuth,
     tagTypes: ['Note', 'User'],
     endpoints: () => ({})
 })

@@ -24,8 +24,8 @@ const Home = () => {
                 <h1>Landing page</h1>
                 <Link to={'/dash'} className={'link'}>DashBoard</Link>
                 <button onClick={sendLogOut} className={'logoutBut'}>Logout</button>
-                {isAdmin && <p>Welcome Back Admin</p>}
-                {!isAdmin && <p>Welcome User</p>}
+                {isAdmin && <p>Welcome Back Admin {username}</p>}
+                {!isAdmin && <p>Welcome User {username}</p>}
             </div>
         )
     }

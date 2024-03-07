@@ -1,54 +1,80 @@
 import useTitle from "../../hooks/useTitle.ts";
-import {useGetNotesQuery} from "../../features/Note/notesApiSlice.ts";
+import {
+    notesAdapter,
+    notesApiSlice,
+    notesInitialState,
+    useGetNotesQuery
+} from "../../features/Note/notesApiSlice.ts";
 import Loading from "../../components/Loading.tsx";
 import {errTypo} from "../../Types/feature.auth.ts";
 import SingleNoteRow from "./SingleNoteRow.tsx";
 import '../../styles/pages/notes/note.css'
+import {useSelector} from "react-redux";
+import {selectGlobalError} from "../../features/auth/authSlice.ts";
+import {createSelector, EntityId} from "@reduxjs/toolkit";
+import {RootState} from "../../App/store.ts";
+import useAuth from "../../hooks/useAuth.ts";
+
 const NotesList = () => {
     useTitle('Notes List')
-
+    const {useAuthEmail: email} = useAuth()
     const {
-        data: notes,
         isLoading,
         isSuccess,
         isError,
         error
-    } = useGetNotesQuery('notesList', {
+    } = useGetNotesQuery(email, {
         pollingInterval: 15000,
         refetchOnFocus: true,
         refetchOnMountOrArgChange: true
     })
 
+    const selectNotesResult = notesApiSlice.endpoints.getNotes.select(email);
+    const selectNotesData = createSelector(
+        selectNotesResult,
+        (notesResult) => notesResult.data
+    )
+    const {
+        selectIds: selectDummy,
+        selectAll: selectAllNotesDummy,
+    } = notesAdapter.getSelectors((state: RootState) => selectNotesData(state) ?? notesInitialState)
+
+    const dummy: EntityId[] = useSelector((state: RootState) => selectDummy(state))
+    console.log(dummy)
+    const dummy2 = useSelector((state: RootState) => selectAllNotesDummy(state))
+    console.log(dummy2)
+
+    const msg = useSelector(selectGlobalError)
     let content
     if (isLoading) {
-        return <Loading/>
+        content = <Loading/>
     }
 
-    let errData
     if (isError) {
         const err = error as errTypo
-        errData = <p>{err?.data?.message}</p>
+        content = err?.data?.message
     }
 
     if (isSuccess) {
-        const {ids} = notes
+        // const {ids} = notes
 
         // typecast to array
-        const filteredIds = [...ids]
-        const tableContent = ids?.length &&
-            filteredIds.map(noteId => <SingleNoteRow key={noteId} noteId={noteId}/>)
+        // const filteredIds = [...ids]
 
-        if(filteredIds.length===0){
-            return <p>You have currently no Notes</p>
+        const tableContent = dummy?.length &&
+            dummy.map(noteId => <SingleNoteRow key={noteId} noteId={noteId}/>)
+
+        if (dummy.length === 0) {
+            content = <p>You have currently no Notes</p>
+        } else {
+            content = (
+                <div className={'note-list'}>
+                    <p className="error-message">{msg}</p>
+                    {tableContent}
+                </div>
+            )
         }
-        content = (
-            <div className={'note-list'}>
-                <p>{errData}</p>
-                {tableContent}
-            </div>
-        )
-    }else{
-        return <Loading/>
+
     }
     return content
 }

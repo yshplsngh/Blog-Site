@@ -29,13 +29,11 @@ const Login = () => {
         if (isValid) {
             try {
                 const res: MessageResponse = await login(data).unwrap() as MessageResponse;
-                console.log(res);
+                console.log(res.message);
                 dispatch(setCredential(res.message));
 
             } catch (err) {
                 const er: errTypo = err as errTypo;
-                console.log(err)
-                console.log(er)
                 setErrMsg(er?.data?.message);
             }
         }

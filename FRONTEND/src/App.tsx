@@ -9,7 +9,9 @@ import Prefetch from "./features/auth/prefetch.tsx";
 import Home from './pages/Home.tsx'
 import Loading from "./components/Loading.tsx";
 
-import ManageUsers from "./pages/Admin/ManageUsers.tsx";
+import UsersList from "./pages/Admin/UsersList.tsx";
+import ViewUserDetail from "./pages/Admin/ViewUserDetail.tsx";
+import ViewUserAllNotes from "./pages/Admin/ViewUserAllNotes.tsx";
 const Signup:lazyJSXType = lazy(()=>import('./pages/Signup.tsx'))
 const Layout:lazyJSXType = lazy(()=>import('./components/Layout.tsx'))
 const DashBoard:lazyJSXType = lazy(()=>import('./pages/Dash.tsx'))
@@ -46,7 +48,9 @@ const App = () => {
 
                                 {/*admin routes*/}
                                 <Route element={<RequiredAuth allowedRoles={['admin']}/>}>
-                                    <Route path={'users'} element={<ManageUsers/>}/>
+                                    <Route path={'users'} element={<UsersList/>}/>
+                                    <Route path={'users/detail/viewAllNotes/:userId'} element={<ViewUserAllNotes/>}/>
+                                    <Route path={'users/detail/:userId'} element={<ViewUserDetail/>}/>
                                 </Route>
                             </Route>
                         </Route>

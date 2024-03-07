@@ -5,7 +5,7 @@ import {JWTverify} from "../middleware/JWTverification";
 
 
 router.route('/createNote').post(JWTverify,createNote);
-router.route('/getAllNotes').get(JWTverify,getAllNotes);
+router.route('/getAllNotes').post(JWTverify,getAllNotes);
 router.route('/updateNote').patch(JWTverify,updateNote);
 router.route('/deleteNote').delete(JWTverify,deleteNote);
 export {router as noteRouter}

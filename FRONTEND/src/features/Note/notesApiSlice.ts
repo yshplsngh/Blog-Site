@@ -3,15 +3,17 @@ import {resNotesArrayType, resType} from "../../Types/feature.note.ts";
 import {createEntityAdapter, createSelector} from "@reduxjs/toolkit";
 import {RootState} from "../../App/store.ts";
 
-const notesAdapter = createEntityAdapter()
-const initialState = notesAdapter.getInitialState()
+
+export const notesAdapter = createEntityAdapter()
+export const notesInitialState = notesAdapter.getInitialState()
 
 export const notesApiSlice = apiSlice.injectEndpoints({
     endpoints:(builder)=>({
         getNotes:builder.query({
-            query:()=>({
+            query:(email)=>({
                 url:'note/getAllNotes',
-                method:'GET',
+                method:'POST',
+                body:{email}
             }),
             transformResponse:(response:resType)=>{
                 const resArray = response.message as resNotesArrayType[]
@@ -19,13 +21,13 @@ export const notesApiSlice = apiSlice.injectEndpoints({
                     singlePost.id = singlePost._id
                     return singlePost
                 })
-                return notesAdapter.setAll(initialState,newResponse)
+                return notesAdapter.setAll(notesInitialState,newResponse)
             },
             providesTags: (result) => {
                 if(result?.ids){
                     return [
                         {type:'Note' , id:'LIST'},
-                        ...result.ids.map(id=>({type:'Note' as const,id}))
+                        ...result.ids.map((id)=>({type:'Note' as const,id}))
                     ]
                 }else return [{type:'Note',id:'LIST'}]
             }
@@ -70,16 +72,16 @@ export const {
     useDeleteNoteMutation
 } = notesApiSlice
 
-export const selectNotesResult = notesApiSlice.endpoints.getNotes.select("notesList");
+const selectNotesResult = notesApiSlice.endpoints.getNotes.select('papa@gmail.com');
 
 const selectNotesData = createSelector(
     selectNotesResult,
-    notesResult=>notesResult.data
+    (notesResult)=>notesResult.data
 )
-// console.log(selectNotesData)
+
 export const {
     selectAll: selectAllNotes,
     selectById: selectNoteById,
     selectIds: selectNoteIds
-} = notesAdapter.getSelectors<RootState>((state:RootState)=>selectNotesData(state) ?? initialState)
+} = notesAdapter.getSelectors((state:RootState)=>selectNotesData(state) ?? notesInitialState)
 

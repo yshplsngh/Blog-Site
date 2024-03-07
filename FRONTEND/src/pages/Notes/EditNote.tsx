@@ -59,38 +59,41 @@ const EditNote = () => {
         errContent = err.data.message
     }
 
-    if(!isIdValid.success){
-        return <p>Invalid note in URL</p>
+    let content;
+    if (!isIdValid.success) {
+        content = <p>Invalid note in URL</p>
     }
 
     if (isLoading || (isIdValid.success && !note)) {
-        return <Loading/>
+        content = <Loading/>
     }
-
-    return (
-        <div className="edit-note-container">
-            <form className="form-container" onSubmit={handleSubmit(onSubmit)}>
-                <p className="error-message">{errContent}</p>
-                <label htmlFor={'title'}>Title:</label>
-                <input
-                    type={'text'}
-                    id={'title'}
-                    {...register('title',{required:true})}
-                    placeholder={'title-'}
-                />
-                {errors.title && <p className="error-message">{errors.title?.message}</p>}
-                <label htmlFor={'desc'}>Desc:</label>
-                <input
-                    type={'textarea'}
-                    id={'desc'}
-                    {...register('desc',{required:true})}
-                    placeholder={'desc-'}
-                />
-                {errors.desc && <p className="error-message">{errors.desc?.message}</p>}
-                <button type={'submit'}>Done</button>
-            </form>
-        </div>
-    )
+    if (note as resNotesArrayType) {
+        content = (
+            <div className="edit-note-container">
+                <form className="form-container" onSubmit={handleSubmit(onSubmit)}>
+                    <p className="error-message">{errContent}</p>
+                    <label htmlFor={'title'}>Title:</label>
+                    <input
+                        type={'text'}
+                        id={'title'}
+                        {...register('title', {required: true})}
+                        placeholder={'title-'}
+                    />
+                    {errors.title && <p className="error-message">{errors.title?.message}</p>}
+                    <label htmlFor={'desc'}>Desc:</label>
+                    <input
+                        type={'textarea'}
+                        id={'desc'}
+                        {...register('desc', {required: true})}
+                        placeholder={'desc-'}
+                    />
+                    {errors.desc && <p className="error-message">{errors.desc?.message}</p>}
+                    <button type={'submit'}>Done</button>
+                </form>
+            </div>
+        )
+    }
+    return content
 }
 
 export default EditNote

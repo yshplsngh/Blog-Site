@@ -1,5 +1,5 @@
 import {apiSlice} from "../../App/API/apiSlice.ts";
-import {logOut, setCredential} from "./authSlice.ts";
+import {logOut, resetError, setCredential} from "./authSlice.ts";
 
 export const authApiSlice = apiSlice.injectEndpoints({
     endpoints:builder=> ({
@@ -42,11 +42,11 @@ export const authApiSlice = apiSlice.injectEndpoints({
                 url:'/auth/logOut',
                 method:"POST"
             }),
-            async onQueryStarted(arg,{dispatch,queryFulfilled}){
+            async onQueryStarted(_,{dispatch,queryFulfilled}){
                 try {
-                    // console.log(arg)
                     await queryFulfilled
-                    dispatch(logOut(arg))
+                    dispatch(logOut())
+                    dispatch(resetError())
                     setTimeout(()=>{
                         dispatch(apiSlice.util.resetApiState())
                     },1000)

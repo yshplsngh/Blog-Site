@@ -4,6 +4,7 @@ import UserSchema from "../model/user.schema";
 import NoteSchema, {noteModel} from "../model/note.schema";
 import {returnMsg} from "../utils/ResponseHandler";
 import {dataToInsert, UserResponse} from "../types/globalTypes";
+import {custom} from "zod";
 
 
 // @desc create new note
@@ -38,6 +39,7 @@ const createNote = async (req: Request & dataToInsert, res:Response<UserResponse
 // @route GET api/v1/note/getAllNotes
 // @access private
 const getAllNotes = async (req: Request & dataToInsert,res:Response<UserResponse>) => {
+    console.log(req.body)
     /*here we need _id to get all notes of that user*/
     const found = await UserSchema.findOne({email: req.email}).select('_id').lean().exec();
     if (!found) {
@@ -52,6 +54,7 @@ const getAllNotes = async (req: Request & dataToInsert,res:Response<UserResponse
     }))
     res.status(200).send({success:true,message:notesWithUser})
 }
+
 
 
 // @desc update title,desc
@@ -89,10 +92,16 @@ const deleteNote = async (req: Request & dataToInsert, res:Response<UserResponse
     if (!note) {
         return res.status(404).send({success: false, message: "note not found"})
     }
+    const data = await note.deleteOne().exec();
+    if(data.acknowledged===false){
+        return res.status(404).send({success: false, message: "something went wrong/delete note"})
+    }
 
-    await note.deleteOne();
+    // now also delete noteId from userSchema notes Array
+    const ret = await UserSchema.findByIdAndUpdate(note.user,{$pull:{notes:isValid.data.id}},{new:true}).lean().exec()
     const reply: string = `${req.email}, note deleted with id ${isValid.data.id}`
     res.status(200).send({success: true, message: reply});
+    // res.status(401).send({success: false, message:'custom'});
 }
 
 export {createNote, getAllNotes, updateNote, deleteNote};

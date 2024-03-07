@@ -21,6 +21,7 @@ export const isEmail = z.strictObject({
         .toLowerCase()
         .email(errMsg.isEmail)
 })
+
 export const isPassword = z.strictObject({
     password:z.string()
         .trim()

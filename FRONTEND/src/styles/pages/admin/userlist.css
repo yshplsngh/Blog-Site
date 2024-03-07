@@ -1,0 +1,47 @@
+table, th, td {
+    border: 1px solid white;
+    border-collapse: collapse;
+}
+th, td {
+    border-style: outset;
+}
+.error-message {
+    color: #dc3545;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+
+/* UsersList Component Styles */
+.users-list-container {
+    padding: 20px;
+}
+
+.users-list-container p {
+    font-size: 18px;
+}
+
+.users-list-container table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.users-list-container th, .users-list-container td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+.users-list-container th {
+    background-color: #363434;
+}
+
+.activeUser {
+    color: #27ae60; /* green */
+}
+
+.blockedUser {
+    color: #c0392b; /* red */
+}
+

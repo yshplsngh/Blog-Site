@@ -22,6 +22,7 @@ const CreateNewNote = ()=>{
     ] = useCreateNoteMutation();
 
     const navigate = useNavigate()
+
     useEffect(() => {
         if(isSuccess){
             navigate('/dash/notes')
@@ -33,37 +34,41 @@ const CreateNewNote = ()=>{
         const err = error as errTypo
         errContent = err?.data?.message
     }
-    if(isLoading){
-        return <Loading/>
-    }
+    let content
     const onSubmit:SubmitHandler<EditNoteFormType> = async (data:EditNoteFormType)=>{
         if(isValid){
             await createNote({title:data.title,desc:data.desc})
         }
     }
-    return (
-        <div>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <p className="error-message">{errContent}</p>
-                <label htmlFor={'title'}>Title:</label>
-                <input
-                    type={'text'}
-                    id={'title'}
-                    {...register('title', {required: true})}
-                    placeholder={'Title:'}
-                />
-                {errors.title && <p>{errors.title?.message}</p>}
-                <label htmlFor={'desc'}>Desc:</label>
-                <input
-                    type={'text'}
-                    id={'desc'}
-                    {...register('desc', {required: true})}
-                    placeholder={'Desc:'}
-                />
-                {errors.desc && <p>{errors.desc?.message}</p>}
-                <button type={'submit'}>Create Note</button>
-            </form>
-        </div>
-    )
+
+    if(isLoading){
+        content= <Loading/>
+    }else{
+        content = (
+            <div>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                    <p className="error-message">{errContent}</p>
+                    <label htmlFor={'title'}>Title:</label>
+                    <input
+                        type={'text'}
+                        id={'title'}
+                        {...register('title', {required: true})}
+                        placeholder={'Title:'}
+                    />
+                    {errors.title && <p>{errors.title?.message}</p>}
+                    <label htmlFor={'desc'}>Desc:</label>
+                    <input
+                        type={'text'}
+                        id={'desc'}
+                        {...register('desc', {required: true})}
+                        placeholder={'Desc:'}
+                    />
+                    {errors.desc && <p>{errors.desc?.message}</p>}
+                    <button type={'submit'}>Create Note</button>
+                </form>
+            </div>
+        )
+    }
+    return content
 }
 export default CreateNewNote
