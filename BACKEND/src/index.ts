@@ -32,49 +32,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false}));
 app.use(cookieParser())
 
-app.get('/',(req:Request,res:Response)=>{
-    res.send("ppp");
-})
 
 app.use('/api/v1/auth',authRouter);
 app.use('/api/v1/note',noteRouter);
 app.use('/api/v1/admin',adminRouter);
 app.use('/api/v1/user',userRouter);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 app.use(errorLogger);
 mongoose.connection.on('open', ():void => {

@@ -1,7 +1,6 @@
 import express, { Router} from "express";
 const router:Router = express.Router();
 import {logOut, login, refresh, signup} from "../controller/auth.Controller"
-import { JWTverify } from "../middleware/JWTverification"
 
 
 router.route('/login').post(login)
