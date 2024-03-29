@@ -35,6 +35,7 @@ module.exports = {
     ".*.js",
     "node_modules/",
     "dist/",
+    "vite.config.ts",
   ],
   overrides: [
     // Force ESLint to detect .tsx files

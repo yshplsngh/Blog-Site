@@ -1,15 +1,11 @@
 import { SubmitHandler, useForm } from "react-hook-form";
-import {
-  EditNoteFormSchema,
-  EditNoteFormType,
-} from "../../Types/pages.note.ts";
+import { errTypo, EOCNoteFormType, EOCNoteFormSchema } from "@repo/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import useTitle from "../../hooks/useTitle.ts";
 import { useCreateNoteMutation } from "../../features/Note/notesApiSlice.ts";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Loading from "../../components/Loading.tsx";
-import { errTypo } from "../../Types/feature.auth.ts";
 
 const CreateNewNote = () => {
   useTitle("create Note");
@@ -17,7 +13,7 @@ const CreateNewNote = () => {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<EditNoteFormType>({ resolver: zodResolver(EditNoteFormSchema) });
+  } = useForm<EOCNoteFormType>({ resolver: zodResolver(EOCNoteFormSchema) });
 
   const [createNote, { isLoading, error, isError, isSuccess }] =
     useCreateNoteMutation();
@@ -36,8 +32,8 @@ const CreateNewNote = () => {
     errContent = err?.data?.message;
   }
   let content;
-  const onSubmit: SubmitHandler<EditNoteFormType> = async (
-    data: EditNoteFormType,
+  const onSubmit: SubmitHandler<EOCNoteFormType> = async (
+    data: EOCNoteFormType,
   ) => {
     if (isValid) {
       await createNote({ title: data.title, desc: data.desc });

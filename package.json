@@ -5,7 +5,9 @@
     "build": "turbo build",
     "dev": "turbo dev",
     "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "clean": "npm exec --workspaces -- npx rimraf node_modules && npx rimraf node_modules",
+    "rein": "yarn clean && yarn install"
   },
   "devDependencies": {
     "@repo/eslint-config": "*",

@@ -1,11 +1,9 @@
 import { Link } from "react-router-dom";
 import "../styles/pages/home.css";
 import useAuth from "../hooks/useAuth.ts";
-import React from "react";
 import { useSendLogOutMutation } from "../features/auth/authApiSlice.ts";
 import Loading from "../components/Loading.tsx";
 import useTitle from "../hooks/useTitle.ts";
-import { Button } from "@repo/ui/button";
 
 const Home = () => {
   const { username, isAdmin } = useAuth();
@@ -20,7 +18,6 @@ const Home = () => {
       <Link to="/signup" className="signup">
         Register
       </Link>
-      <Button />
     </div>
   );
 

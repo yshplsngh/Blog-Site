@@ -1,11 +1,11 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { LoginFormSchema, LoginFormType } from "../Types/pages.component.ts";
+import { LoginFormSchema, LoginFormType } from "@repo/types";
 import { useLoginMutation } from "../features/auth/authApiSlice.ts";
 import { useEffect, useState } from "react";
 import Loading from "../components/Loading.tsx";
 import { Link, NavigateFunction, useNavigate } from "react-router-dom";
-import { errTypo, MessageResponse } from "../Types/feature.auth.ts";
+import { errTypo, MessageResponse } from "@repo/types";
 import { useDispatch } from "react-redux";
 import { setCredential } from "../features/auth/authSlice.ts";
 import "../styles/pages/login.css";
