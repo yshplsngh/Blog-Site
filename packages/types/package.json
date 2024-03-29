@@ -1,0 +1,23 @@
+{
+  "name": "@types/types",
+  "version": "1.0.0",
+  "private": "true",
+  "main": "src/index.ts",
+  "description": "zod types for client and api",
+  "scripts": {
+    "lint": "eslint . --max-warnings 0",
+    "generate:component": "turbo gen react-component"
+  },
+  "devDependencies": {
+    "@repo/eslint-config": "*",
+    "@repo/typescript-config": "*",
+    "@turbo/gen": "^1.12.4",
+    "@types/eslint": "^8.56.5",
+    "eslint": "^8.57.0",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "mongoose": "^8.2.4",
+    "zod": "^3.22.4"
+  }
+}

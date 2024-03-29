@@ -1,2 +1,0 @@
-update user
-delete user
