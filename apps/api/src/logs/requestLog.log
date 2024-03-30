@@ -21205,3 +21205,5 @@
 16:03:58 03/30/2024		method:POST	url:/api/v1/auth/logOut	origin:http://localhost:5173
 16:05:15 03/30/2024		method:OPTIONS	url:/api/v1/auth/login	origin:http://localhost:5173
 16:05:15 03/30/2024		method:POST	url:/api/v1/auth/login	origin:http://localhost:5173
+22:51:59 03/30/2024		method:OPTIONS	url:/api/v1/auth/logOut	origin:http://localhost:5173
+22:51:59 03/30/2024		method:POST	url:/api/v1/auth/logOut	origin:http://localhost:5173
