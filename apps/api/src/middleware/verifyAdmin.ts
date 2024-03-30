@@ -1,5 +1,5 @@
 import { Response, Request, NextFunction } from "express";
-import { dataToInsert, UserResponse } from "../types/globalTypes";
+import { dataToInsert, UserResponse } from "@repo/types";
 import UserSchema from "../model/user.schema";
 
 const verifyAdmin = async (

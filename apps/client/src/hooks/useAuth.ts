@@ -9,6 +9,9 @@ interface useAuthTypo {
   useAuthEmail: string;
   roles: string[];
 }
+interface jwyPayload {
+  userInfo: payloadIn;
+}
 
 const useAuth = (): useAuthTypo => {
   const token: string | null = useSelector(selectCurrentToken);
@@ -16,8 +19,7 @@ const useAuth = (): useAuthTypo => {
   let username: string = "";
   let useAuthEmail: string = "";
   if (token) {
-    const decodedJwt = jwtDecode(token);
-    console.log(decodedJwt);
+    const decodedJwt = jwtDecode(token) as jwyPayload;
     const {
       userInfo: { name, email, roles },
     } = decodedJwt;

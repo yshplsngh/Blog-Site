@@ -8,7 +8,7 @@ import {
   errTypo,
   EOCNoteFormType,
   EOCNoteFormSchema,
-  isNoteId,
+  isId,
 } from "@repo/types";
 import Loading from "../../components/Loading.tsx";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -24,7 +24,7 @@ const EditNote = () => {
   const location = useLocation();
 
   const { selectNoteById } = ownSelector(location.state.email);
-  const isIdValid = isNoteId.safeParse({ noteId });
+  const isIdValid = isId.safeParse({ noteId });
   let errContent: string = "";
 
   const {

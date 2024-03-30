@@ -1,6 +1,7 @@
 import { z } from "zod";
-import { isNoteId } from "./noteType.ts";
+import { isId } from "./noteType.ts";
 
+/* eslint-disable no-unused-vars */
 enum errMsg {
   minLength = "name should be min 3 length",
   maxLength = "name should be max 30 length",
@@ -8,6 +9,7 @@ enum errMsg {
   minPass = "password should be min 5 length",
   maxPass = "password should be max 100 length",
 }
+/* eslint-disable no-unused-vars */
 
 export const isName = z.strictObject({
   name: z.string().min(3, errMsg.minLength).max(30, errMsg.maxLength).trim(),
@@ -36,13 +38,11 @@ export interface loginType {
   password: string;
 }
 
-export const updateProfileType = isName.merge(isNoteId);
+export const updateProfileType = isName.merge(isId);
 const isOldPassword = z.strictObject({
   oldPassword: z.string().trim(),
 });
-export const changePasswordType = isPassword
-  .merge(isOldPassword)
-  .merge(isNoteId);
+export const changePasswordType = isPassword.merge(isOldPassword).merge(isId);
 // const loginFormData = isEmail.merge(isPassword);
 // const signupFormData = loginFormData.merge(isName);
 

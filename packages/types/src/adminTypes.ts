@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { isNoteId } from "./noteType.ts";
+import { isId } from "./noteType.ts";
 import { isEmail, isName } from "./authTypes.ts";
 
 const isRoles = z.strictObject({
@@ -17,6 +17,6 @@ const isIsActive = z.strictObject({
 
 export const updateInfoType = isRoles
   .merge(isIsActive)
-  .merge(isNoteId)
+  .merge(isId)
   .merge(isEmail)
   .merge(isName);

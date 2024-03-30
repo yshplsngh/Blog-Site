@@ -1,4 +1,5 @@
 import express, { Router } from "express";
+
 const router: Router = express.Router();
 import {
   createNote,
@@ -12,4 +13,5 @@ router.route("/createNote").post(JWTverify, createNote);
 router.route("/getAllNotes").post(JWTverify, getAllNotes);
 router.route("/updateNote").patch(JWTverify, updateNote);
 router.route("/deleteNote").delete(JWTverify, deleteNote);
+
 export { router as noteRouter };

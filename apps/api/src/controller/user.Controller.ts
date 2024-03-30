@@ -1,9 +1,13 @@
 import { Request, Response } from "express";
 import { returnMsg } from "../utils/ResponseHandler";
-import { dataToInsert, UserResponse } from "../types/globalTypes";
+import {
+  dataToInsert,
+  UserResponse,
+  changePasswordType,
+  updateProfileType,
+} from "@repo/types";
 import UserSchema from "../model/user.schema";
 import { userLogger } from "../middleware/logger";
-import { changePasswordType, updateProfileType } from "../types/userTypes";
 import bcrypt from "bcrypt";
 
 // @desc update personal profile like-name
@@ -18,7 +22,7 @@ const updateProfile = async (
     const reply: string = returnMsg(isValid);
     return res.status(401).send({ success: false, message: reply });
   }
-  const user = await UserSchema.findById(isValid.data.id).exec();
+  const user = await UserSchema.findById(isValid.data.mId).exec();
   if (!user) {
     return res.status(400).send({ success: false, message: "User not found" });
   }
@@ -42,7 +46,7 @@ const changePassword = async (
     const reply: string = returnMsg(isValid);
     return res.status(401).send({ success: false, message: reply });
   }
-  const user = await UserSchema.findById(isValid.data.id).exec();
+  const user = await UserSchema.findById(isValid.data.mId).exec();
   if (!user) {
     return res.status(400).send({ success: false, message: "User not found" });
   }
@@ -57,8 +61,7 @@ const changePassword = async (
       .send({ success: false, message: "incorrect old password" });
   }
 
-  const hashedPass: string = await bcrypt.hash(isValid.data.password, 10);
-  user.password = hashedPass;
+  user.password = await bcrypt.hash(isValid.data.password, 10);
   await user.save();
 
   const reply: string = `Username ${user.name} with ID ${user._id} updated his password`;

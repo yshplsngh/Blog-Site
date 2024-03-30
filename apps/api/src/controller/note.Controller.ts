@@ -1,11 +1,15 @@
 import { Response, Request } from "express";
-import { createNoteForm, createNoteFormWithId, isId } from "../types/noteTypes";
+import {
+  EOCNoteFormSchema,
+  EOCNoteFormSchemaWithId,
+  isId,
+  dataToInsert,
+  UserResponse,
+  isEmail,
+} from "@repo/types";
 import UserSchema from "../model/user.schema";
 import NoteSchema, { noteModel } from "../model/note.schema";
 import { returnMsg } from "../utils/ResponseHandler";
-import { dataToInsert, UserResponse } from "../types/globalTypes";
-import { custom } from "zod";
-import { isEmail } from "../types/authTypes";
 
 // @desc create new note
 // @route POST api/v1/note/createNote
@@ -14,7 +18,7 @@ const createNote = async (
   req: Request & dataToInsert,
   res: Response<UserResponse>,
 ) => {
-  const isValid = createNoteForm.safeParse(req.body);
+  const isValid = EOCNoteFormSchema.safeParse(req.body);
   if (!isValid.success) {
     const msg: string = returnMsg(isValid);
     return res.status(422).send({ success: false, message: msg });
@@ -92,12 +96,12 @@ const updateNote = async (
   req: Request & dataToInsert,
   res: Response<UserResponse>,
 ) => {
-  const isValid = createNoteFormWithId.safeParse(req.body);
+  const isValid = EOCNoteFormSchemaWithId.safeParse(req.body);
   if (!isValid.success) {
     const msg: string = returnMsg(isValid);
     return res.status(422).send({ success: false, message: msg });
   }
-  const note = await NoteSchema.findById(isValid.data.id).exec();
+  const note = await NoteSchema.findById(isValid.data.mId).exec();
   if (!note) {
     return res.status(404).send({ success: false, message: "note not found" });
   }
@@ -105,7 +109,7 @@ const updateNote = async (
   note.title = isValid.data.title;
   note.desc = isValid.data.desc;
   await note.save();
-  const reply: string = `${req.email}, note updated with id ${isValid.data.id}`;
+  const reply: string = `${req.email}, note updated with id ${isValid.data.mId}`;
   res.status(201).send({ success: true, message: reply });
 };
 
@@ -121,26 +125,27 @@ const deleteNote = async (
     const msg: string = returnMsg(isValid);
     return res.status(422).send({ success: false, message: msg });
   }
-  const note = await NoteSchema.findById(isValid.data.id).exec();
+  const note = await NoteSchema.findById(isValid.data.mId).exec();
   if (!note) {
     return res.status(404).send({ success: false, message: "note not found" });
   }
   const data = await note.deleteOne().exec();
-  if (data.acknowledged === false) {
+  if (!data.acknowledged) {
     return res
       .status(404)
       .send({ success: false, message: "something went wrong/delete note" });
   }
 
   // now also delete noteId from userSchema notes Array
-  const ret = await UserSchema.findByIdAndUpdate(
+  await UserSchema.findByIdAndUpdate(
     note.user,
-    { $pull: { notes: isValid.data.id } },
+    { $pull: { notes: isValid.data.mId } },
     { new: true },
   )
     .lean()
     .exec();
-  const reply: string = `${req.email}, note deleted with id ${isValid.data.id}`;
+
+  const reply: string = `${req.email}, note deleted with id ${isValid.data.mId}`;
   res.status(200).send({ success: true, message: reply });
   // res.status(401).send({success: false, message:'custom'});
 };

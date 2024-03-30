@@ -1,18 +1,22 @@
 import { Request, Response } from "express";
 import { config } from "../config/config";
-import { loginFormData, signupFormData, payloadIn } from "../types/authTypes";
+import {
+  LoginFormSchema,
+  SignupFormSchema,
+  payloadIn,
+  UserResponse,
+} from "@repo/types";
 import UserSchema, { userModel } from "../model/user.schema";
 import bcrypt from "bcrypt";
 import { authLogger, msgLogger } from "../middleware/logger";
 import jwt from "jsonwebtoken";
 import { returnMsg } from "../utils/ResponseHandler";
-import { UserResponse } from "../types/globalTypes";
 
 // @desc signup
 // @route POST /api/v1/auth/signup
 // @access public
 const signup = async (req: Request, res: Response<UserResponse>) => {
-  const isValid = signupFormData.safeParse(req.body);
+  const isValid = SignupFormSchema.safeParse(req.body);
   if (!isValid.success) {
     const msg: string = returnMsg(isValid);
     return res.status(422).send({ success: false, message: msg });
@@ -55,7 +59,7 @@ const login = async (req: Request, res: Response<UserResponse>) => {
   const cookies = req.cookies;
   // console.log(`cookie available at login:`,cookies);
 
-  const isValid = loginFormData.safeParse(req.body);
+  const isValid = LoginFormSchema.safeParse(req.body);
   if (!isValid.success) {
     const mess: string = returnMsg(isValid);
     return res.status(422).json({ success: false, message: mess });
@@ -125,7 +129,7 @@ const login = async (req: Request, res: Response<UserResponse>) => {
 
   found.refreshToken = [...newRefreshTokenArray, newRefreshToken];
 
-  const result = await found.save();
+  await found.save();
   // console.log(result)
 
   res.cookie("jwt", newRefreshToken, {

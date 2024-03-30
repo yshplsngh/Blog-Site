@@ -21197,3 +21197,11 @@
 21:06:45 03/29/2024		method:POST	url:/api/v1/note/getAllNotes	origin:http://localhost:5173
 21:06:53 03/29/2024		method:OPTIONS	url:/api/v1/auth/logOut	origin:http://localhost:5173
 21:06:53 03/29/2024		method:POST	url:/api/v1/auth/logOut	origin:http://localhost:5173
+16:03:40 03/30/2024		method:OPTIONS	url:/api/v1/auth/login	origin:http://localhost:5173
+16:03:40 03/30/2024		method:POST	url:/api/v1/auth/login	origin:http://localhost:5173
+16:03:41 03/30/2024		method:OPTIONS	url:/api/v1/note/getAllNotes	origin:http://localhost:5173
+16:03:41 03/30/2024		method:POST	url:/api/v1/note/getAllNotes	origin:http://localhost:5173
+16:03:58 03/30/2024		method:OPTIONS	url:/api/v1/auth/logOut	origin:http://localhost:5173
+16:03:58 03/30/2024		method:POST	url:/api/v1/auth/logOut	origin:http://localhost:5173
+16:05:15 03/30/2024		method:OPTIONS	url:/api/v1/auth/login	origin:http://localhost:5173
+16:05:15 03/30/2024		method:POST	url:/api/v1/auth/login	origin:http://localhost:5173

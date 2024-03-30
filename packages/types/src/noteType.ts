@@ -1,14 +1,16 @@
 import { z } from "zod";
 import mongoose from "mongoose";
 
+/* eslint-disable no-unused-vars */
 enum noteMsg {
   minLength = " can't be empty",
   maxTLength = "title can't be more than 20 character, pay 2000💸💵 for 1 million character upi id: 8439345464@ybl",
   maxDLength = "description can't be more than 100 character, pay 2000💸💵 for 1 million character upi id: 8439345464@ybl",
 }
+/* eslint-disable no-unused-vars */
 
-export const isNoteId = z.strictObject({
-  noteId: z
+export const isId = z.strictObject({
+  mId: z
     .string()
     .trim()
     .refine((data: string): boolean => {
@@ -36,7 +38,7 @@ export const EOCNoteFormSchema = z.strictObject({
     .min(1, noteMsg.minLength)
     .max(100, noteMsg.maxDLength),
 });
-export const EOCNoteFormSchemaWithId = EOCNoteFormSchema.merge(isNoteId);
+export const EOCNoteFormSchemaWithId = EOCNoteFormSchema.merge(isId);
 
 export type EOCNoteFormType = z.infer<typeof EOCNoteFormSchema>;
 

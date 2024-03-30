@@ -1,4 +1,4 @@
-import express, { Application, Response, Request } from "express";
+import express, { Application } from "express";
 import mongoose from "mongoose";
 import process from "process";
 import cors from "cors";
@@ -11,7 +11,7 @@ import { adminRouter } from "./routes/admin.routes";
 import { corsOptions } from "./config/corsOptions";
 import { credentials } from "./config/credentials";
 import { validateEnv } from "./config/config";
-import { msg } from "./types/globalTypes";
+import { msg } from "@repo/types";
 import cookieParser from "cookie-parser";
 import { userRouter } from "./routes/user.routes";
 

@@ -3,7 +3,7 @@ import * as path from "path";
 import * as fsPromises from "fs/promises";
 import { NextFunction, Request, Response } from "express";
 import { format } from "date-fns";
-import { UserResponse } from "../types/globalTypes";
+import { UserResponse } from "@repo/types";
 
 const mainLogger = async (message: string, filename: string): Promise<void> => {
   const date: string = format(new Date(), "HH:mm:ss MM/dd/yyyy");

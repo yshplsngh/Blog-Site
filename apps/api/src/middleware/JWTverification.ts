@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 import { NextFunction, Request, Response } from "express";
 import { msgLogger } from "./logger";
 import { config } from "../config/config";
-import { dataToInsert, UserResponse } from "../types/globalTypes";
+import { dataToInsert, UserResponse } from "@repo/types";
 
 const JWTverify = (
   req: Request & dataToInsert,
